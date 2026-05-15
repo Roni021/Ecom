@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 
@@ -109,29 +109,35 @@ const sampleProducts = [
   },
 ];
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = params.id;
-  let product = null;
-
+export async function GET(request: NextRequest, context: any) {
+  // Next.js may provide params as a Promise in some environments/types — handle both
+  let params = context?.params;
   try {
-    await dbConnect();
-    product = await Product.findById(id).lean();
-  } catch (error) {
-    console.warn('Product detail fetch DB error:', error);
+    if (params && typeof params.then === 'function') {
+      params = await params;
+    }
+  } catch (e) {
+    console.warn('Failed resolving params promise', e);
   }
 
-  if (!product) {
+  const id = params?.id;
+  let product = null;
+
+  if (id) {
+    try {
+      await dbConnect();
+      product = await Product.findById(id).lean();
+    } catch (error) {
+      console.warn('Product detail fetch DB error:', error);
+    }
+  }
+
+  if (!product && id) {
     product = sampleProducts.find((item) => item._id === id) || null;
   }
 
   if (!product) {
-    return NextResponse.json(
-      { error: 'Product not found' },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: 'Product not found' }, { status: 404 });
   }
 
   return NextResponse.json(product);
