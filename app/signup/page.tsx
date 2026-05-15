@@ -41,19 +41,10 @@ export default function SignupPage() {
 <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full theme-accent/5 blur-[120px]"></div>
 <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] rounded-full theme-accent/10 blur-[100px]"></div>
 </div>
-{/* <!-- Top Navigation --> */}
-<header className="w-full px-6 lg:px-10 py-6 flex justify-between items-center">
-<div className="flex items-center gap-2">
-<Link href="/" className="theme-accent p-2 rounded-lg text-white">
-<span className="material-symbols-outlined block">rocket_launch</span>
-</Link>
-<h2 className="theme-text dark:theme-text text-xl heading-font font-extrabold tracking-tight">Market<span className="theme-accent-text">Hub</span></h2>
-</div>
-<Link className="text-sm font-semibold theme-text dark:theme-text hover:theme-accent-text transition-colors" href="/support/help_center">Help Center</Link>
-</header>
+
 <main className="flex-1 flex items-center justify-center p-6">
 {/* <!-- Main Sign Up Card --> */}
-<div className="w-full max-w-[480px] theme-surface theme-surface rounded-xl shadow-2xl shadow-primary/5 p-8 lg:p-10 border border-theme-surface/50 dark:border-slate-800">
+<div className="w-full max-w-120 theme-surface theme-surface rounded-xl shadow-2xl shadow-primary/5 p-8 lg:p-10 border border-theme-surface/50 dark:border-slate-800">
 {/* <!-- Headline Section --> */}
 <div className="text-center mb-8">
 <h1 className="text-3xl heading-font font-extrabold theme-text dark:theme-text mb-2">Create your account</h1>
@@ -80,9 +71,9 @@ export default function SignupPage() {
 </div>
 {/* <!-- Divider --> */}
 <div className="relative flex items-center mb-8">
-<div className="flex-grow border-t border-theme-surface dark:border-slate-800"></div>
-<span className="flex-shrink mx-4 text-xs font-medium theme-text uppercase tracking-widest">Or with email</span>
-<div className="flex-grow border-t border-theme-surface dark:border-slate-800"></div>
+<div className="grow border-t border-theme-surface dark:border-slate-800"></div>
+<span className="shrink mx-4 text-xs font-medium theme-text uppercase tracking-widest">Or with email</span>
+<div className="grow border-t border-theme-surface dark:border-slate-800"></div>
 </div>
 {/* <!-- Form --> */}
 <form onSubmit={handleSubmit} className="space-y-5">

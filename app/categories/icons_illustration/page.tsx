@@ -22,7 +22,7 @@ export default function categoris() {
 </nav>
 </div>
 <div className="flex flex-1 justify-end gap-4 md:gap-8">
-<label className="hidden sm:flex flex-col min-w-40 !h-10 max-w-64">
+<label className="hidden sm:flex flex-col min-w-40 h-10! max-w-64">
 <div className="flex w-full flex-1 items-stretch rounded-lg h-full">
 <div className="theme-text flex border-none theme-surface theme-surface items-center justify-center pl-4 rounded-l-lg">
 <span className="material-symbols-outlined text-[20px]">search</span>
@@ -40,7 +40,7 @@ export default function categoris() {
 </div>
 </div>
 </header>
-<main className="flex flex-1 flex-col md:flex-row max-w-[1440px] mx-auto w-full px-4 md:px-10 py-6 gap-8">
+<main className="flex flex-1 flex-col md:flex-row max-w-360 mx-auto w-full px-4 md:px-10 py-6 gap-8">
 <aside className="w-full md:w-64 shrink-0 flex flex-col gap-8">
 <div className="flex flex-col gap-6">
 <div className="flex flex-col">
@@ -298,7 +298,7 @@ export default function categoris() {
 </div>
 </main>
 <footer className="border-t border-theme-surface dark:border-slate-800 py-12 theme-surface dark:bg-background-dark px-10">
-<div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div className="max-w-360 mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
 <div className="flex flex-col gap-4">
 <div className="flex items-center gap-3 theme-accent-text">
 <div className="size-6 flex items-center justify-center theme-accent rounded-md text-white">
@@ -334,7 +334,7 @@ export default function categoris() {
 </div>
 </div>
 </div>
-<div className="max-w-[1440px] mx-auto mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs theme-text">
+<div className="max-w-360 mx-auto mt-12 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs theme-text">
 <p>© 2026 Market3D Inc. All rights reserved.</p>
 <div className="flex gap-6">
 <a className="hover:theme-accent-text" href="#">Privacy Policy</a>

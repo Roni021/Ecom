@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -14,6 +14,10 @@ export default function CheckoutPage() {
   const [cardCvv, setCardCvv] = useState("");
   const [cardName, setCardName] = useState("");
   const [upiId, setUpiId] = useState("");
+  const [customDetails, setCustomDetails] = useState("");
+  const searchParams = useSearchParams();
+  const productId = searchParams.get("productId");
+  const requiresCustomDetails = searchParams.get("custom") === "true";
   
   const { token, isAuthenticated } = useAuth();
   const { items, subtotal, tax, total, clearCart } = useCart();
@@ -31,6 +35,10 @@ export default function CheckoutPage() {
     setError("");
 
     try {
+      if (requiresCustomDetails && !customDetails.trim()) {
+        throw new Error("Please provide custom details before completing your purchase.");
+      }
+
       // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -50,6 +58,8 @@ export default function CheckoutPage() {
           items: orderItems,
           paymentMethod,
           paymentId: `PAY-${Date.now()}`,
+          customDetails: requiresCustomDetails ? customDetails : undefined,
+          productId: productId || undefined,
         }),
       });
 
@@ -110,7 +120,18 @@ export default function CheckoutPage() {
                 <div className="p-4 border-b border-theme-surface dark:border-slate-800">
                   <h2 className="text-xl font-bold">Payment Method</h2>
                 </div>
-                
+                {requiresCustomDetails && (
+                  <div className="p-4 border-b border-theme-surface dark:border-slate-800 bg-amber-50 dark:bg-amber-950/10">
+                    <h3 className="font-semibold mb-2">Custom details required</h3>
+                    <textarea
+                      value={customDetails}
+                      onChange={(e) => setCustomDetails(e.target.value)}
+                      placeholder="Enter the details for your custom product (name, message, style preferences, etc.)"
+                      className="w-full min-h-30 px-4 py-3 rounded-lg border border-theme-surface bg-transparent focus:ring-2 focus:ring-primary outline-none text-sm"
+                      required
+                    />
+                  </div>
+                )}
                 <div className="p-4 flex gap-4">
                   <button
                     type="button"

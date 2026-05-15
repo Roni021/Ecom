@@ -22,7 +22,18 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: [true, 'Product category is required'],
-    enum: ['ui_kits', 'greetingscard', 'website_template', 'social_media_asset', 'icons_illustration', 'email_template'],
+    enum: [
+      'ui_kits',
+      'greetingscard',
+      'website_template',
+      'social_media_asset',
+      'icons_illustration',
+      'email_template',
+      'celebration',
+      'resume',
+      'layout',
+      'photos',
+    ],
   },
   images: [{
     type: String,
@@ -55,6 +66,10 @@ const productSchema = new mongoose.Schema({
     default: 0,
   },
   featured: {
+    type: Boolean,
+    default: false,
+  },
+  requiresDetails: {
     type: Boolean,
     default: false,
   },

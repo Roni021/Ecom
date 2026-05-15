@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface Product {
   _id: string;
@@ -17,20 +17,55 @@ interface Product {
   rating: number;
   reviewCount: number;
   featured: boolean;
+  requiresDetails: boolean;
 }
+
+const productCategories = [
+  { id: 'all', label: 'All' },
+  { id: 'celebration', label: 'Celebration & Festivals' },
+  { id: 'resume', label: 'Resume Templates' },
+  { id: 'layout', label: 'Layout Designs' },
+  { id: 'photos', label: 'Photos' },
+  { id: 'ui_kits', label: 'UI Kits' },
+  { id: 'greetingscard', label: 'Greeting Cards' },
+  { id: 'website_template', label: 'Website Templates' },
+  { id: 'social_media_asset', label: 'Social Media Assets' },
+  { id: 'icons_illustration', label: 'Icons & Illustrations' },
+  { id: 'email_template', label: 'Email Templates' },
+];
+
+const categoryLabels: Record<string, string> = {
+  celebration: 'Celebration & Festivals',
+  resume: 'Resume Templates',
+  layout: 'Layout Designs',
+  photos: 'Photos',
+  ui_kits: 'UI Kits',
+  greetingscard: 'Greeting Cards',
+  website_template: 'Website Templates',
+  social_media_asset: 'Social Media Assets',
+  icons_illustration: 'Icons & Illustrations',
+  email_template: 'Email Templates',
+};
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const searchParams = useSearchParams();
   const { addToCart, items } = useCart();
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    const categoryFromQuery = searchParams?.get('category');
+    if (categoryFromQuery && productCategories.some((category) => category.id === categoryFromQuery)) {
+      setSelectedCategory(categoryFromQuery);
+    }
+
     fetchProducts();
-  }, []);
+  }, [searchParams]);
 
   const fetchProducts = async () => {
     try {
@@ -54,7 +89,7 @@ export default function ProductsPage() {
       router.push('/login');
       return;
     }
-    
+
     setAddingToCart(product._id);
     try {
       await addToCart(product._id);
@@ -65,14 +100,36 @@ export default function ProductsPage() {
     }
   };
 
+  const handleCustomize = (product: Product) => {
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+
+    router.push(`/checkout?productId=${product._id}&custom=true`);
+  };
+
+  const handleBuyNow = (product: Product) => {
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+
+    router.push(`/checkout?productId=${product._id}`);
+  };
+
   const isInCart = (productId: string) => {
     return items.some(item => item.product._id === productId);
   };
 
+  const visibleProducts = selectedCategory === 'all'
+    ? products
+    : products.filter(product => product.category === selectedCategory);
+
   if (loading) {
     return (
       <div className="theme-page min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-(--primary)"></div>
       </div>
     );
   }
@@ -80,15 +137,32 @@ export default function ProductsPage() {
   return (
     <div className="theme-page min-h-screen">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold mb-4">All Products</h1>
-          <p className="theme-text dark:theme-text">
-            Browse our complete collection of premium digital assets
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-4">Digital Products Marketplace</h1>
+          <p className="theme-text dark:theme-text max-w-2xl">
+            Choose from celebration and festival designs, resume templates, layouts, photos, and more.
+            Some products are ready for instant download while others offer a customizable fill-in experience.
           </p>
         </div>
 
+        <div className="mb-10 flex flex-wrap gap-3">
+          {productCategories.map(category => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-all border ${
+                selectedCategory === category.id
+                  ? 'bg-(--primary) text-white border-transparent'
+                  : 'bg-theme-surface dark:bg-slate-800 text-theme-text dark:text-slate-200 border-theme-border'
+              }`}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
+          {visibleProducts.map((product) => (
             <div
               key={product._id}
               className="group theme-surface theme-surface rounded-2xl border border-theme-surface border-theme-surface overflow-hidden hover:shadow-xl transition-all"
@@ -113,35 +187,55 @@ export default function ProductsPage() {
                     ({product.reviewCount} reviews)
                   </span>
                 </div>
-                <h3 className="text-lg font-bold mb-2 group-hover:text-[var(--primary)] transition-colors">
-                  {product.title}
-                </h3>
+                <div className="mb-2">
+                  <Link
+                    href={`/products/${product._id}`}
+                    className="text-lg font-bold group-hover:text-(--primary) transition-colors block"
+                  >
+                    {product.title}
+                  </Link>
+                </div>
                 <p className="theme-text dark:theme-text text-sm mb-4 line-clamp-2">
                   {product.description}
                 </p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    disabled={addingToCart === product._id || isInCart(product._id)}
-                    className={`flex-1 px-4 py-2 rounded-lg text-sm font-bold text-center transition-all ${
-                      isInCart(product._id)
-                        ? 'bg-green-500 text-white cursor-default'
-                        : 'bg-[var(--primary)] text-white hover:shadow-lg hover:scale-105'
-                    }`}
-                  >
-                    {addingToCart === product._id 
-                      ? 'Adding...' 
-                      : isInCart(product._id) 
-                        ? 'In Cart ✓' 
-                        : 'Add to Cart'}
-                  </button>
-                  <Link
-                    href="/checkout"
-                    className="flex-1 theme-surface dark:bg-slate-700 theme-text dark:theme-text px-4 py-2 rounded-lg text-sm font-bold text-center hover:bg-slate-200 dark:hover:bg-slate-600 transition-all"
-                  >
-                    Buy Now
-                  </Link>
+                <div className={`grid gap-2 ${product.requiresDetails ? 'grid-cols-1' : 'sm:grid-cols-[1fr_1fr]'}`}>
+                  {product.requiresDetails ? (
+                    <button
+                      onClick={() => handleCustomize(product)}
+                      className="w-full px-4 py-2 rounded-lg text-sm font-bold text-center bg-(--primary) text-white hover:shadow-lg hover:scale-105 transition-all"
+                    >
+                      Customize & Checkout
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      disabled={addingToCart === product._id || isInCart(product._id)}
+                      className={`w-full px-4 py-2 rounded-lg text-sm font-bold text-center transition-all ${
+                        isInCart(product._id)
+                          ? 'bg-green-500 text-white cursor-default'
+                          : 'bg-(--primary) text-white hover:shadow-lg hover:scale-105'
+                      }`}
+                    >
+                      {addingToCart === product._id
+                        ? 'Adding...'
+                        : isInCart(product._id)
+                          ? 'In Cart ✓'
+                          : 'Add to Cart'}
+                    </button>
+                  )}
+
+                  {!product.requiresDetails && (
+                    <button
+                      onClick={() => handleBuyNow(product)}
+                      className="w-full px-4 py-2 rounded-lg text-sm font-bold text-center bg-theme-surface dark:bg-slate-700 theme-text dark:theme-text hover:bg-slate-200 dark:hover:bg-slate-600 transition-all"
+                    >
+                      Buy Now
+                    </button>
+                  )}
                 </div>
+                {product.requiresDetails && (
+                  <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">This product requires custom details at checkout.</p>
+                )}
               </div>
             </div>
           ))}
@@ -155,75 +249,108 @@ export default function ProductsPage() {
 const staticProducts = [
   {
     _id: '1',
-    title: 'Neo-Minimalist UI Framework',
-    description: 'Complete design system with 500+ customizable components for SaaS products.',
-    price: 24,
-    originalPrice: 49,
-    category: 'ui_kits',
-    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuCFUmTw61A9eVz2ha2aiiaOJYVlSdU_FyrlV9ZhYyNJaU5wYFHlB0aULHHaGaA9o9SJUSlF8sPIIyBQ9tSgBcw5rn4tgr3x4YhG_pi3nPdXTy4EXdfRt2meHE8hvAYQnP4t9MnYcGNlhqVgO3fJbCK9s86roEeW39MEqYZKUwvyZzQklro19lA8N8p2SIiQdMGx4WrNV64e91IOLJoxj9xd0e37zNtavvu4cpnU88JcTZRX5eaA3UjUnSp_fB5Yh_VaMrYBD3Xu6op2'],
-    rating: 4.9,
-    reviewCount: 128,
+    title: 'Festival Celebration Card Set',
+    description: 'Customizable celebration greeting card set for festivals, birthdays, and special events.',
+    price: 14,
+    originalPrice: 28,
+    category: 'celebration',
+    images: ['https://via.placeholder.com/800x500.png?text=Celebration+Card+Set'],
+    rating: 4.8,
+    reviewCount: 86,
     featured: true,
+    requiresDetails: true,
   },
   {
     _id: '2',
-    title: 'Gold Foil Greeting Bundle',
-    description: 'Luxury invitation templates with realistic gold foil textures for all occasions.',
+    title: 'Festival Poster Pack',
+    description: 'Instant download festival poster layouts ready for print and social sharing.',
     price: 12,
-    originalPrice: 24,
-    category: 'greetingscard',
-    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuDsWFbkUN_r9UevEOQIH2zd-m4vX4mVB6ZP_Bvubh8bSxUyDVgZSFC744wunbz9x-zNDm6z9GMqTnGdzHMwicURqalbKQ3y1iU9j7fPsQYZ0EAacSuWuJB8a5u7rwrdxuyX62NFeybDKmyN6kBxe1V_WEQkp8RVtx_9C3JqRPbYHH1svpli_cqorp_Rd6QMTZQURwcc8xKT5YyTElwXPxUUyc948LlNWVtpAxdU0PY-8jfW1_vptO3n7wmAYT_RE-ZwPc_kaMvnYbpa'],
-    rating: 4.8,
-    reviewCount: 94,
-    featured: true,
+    originalPrice: 20,
+    category: 'celebration',
+    images: ['https://via.placeholder.com/800x500.png?text=Festival+Poster+Pack'],
+    rating: 4.6,
+    reviewCount: 64,
+    featured: false,
+    requiresDetails: false,
   },
   {
     _id: '3',
-    title: 'Creator Social Kit 2024',
-    description: 'Viral-ready post and story templates designed for maximum engagement.',
-    price: 18,
-    originalPrice: 32,
-    category: 'social_media_asset',
-    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuBAiIPGNt16QW41T-tGTMfxKnfubYKarPXO9XjTKAhZfD-p5FDQ_S3Ml3Tuaq8ipX-SmL0vYaXetjRppEtEWDOT-mxIU7py1QXQEvG3QfGSz0KfS9pqy8ysTt0WVwRZmFj_zKuBoJKLtp8Lg3r6GezdOBxDeFlp8V8vabOWEYDyZURNbt23DaaG4IN7320olka8zHUKXVIsPzt46n86Pp4h4fXnS8AN4n0UF2Gv8xTDvWLNSAZzf2g_jmJdI577IYRbwKQbQZbqxiyu'],
-    rating: 5.0,
-    reviewCount: 210,
+    title: 'Modern Resume Template',
+    description: 'Editable resume template designed for job seekers who want a polished professional look.',
+    price: 10,
+    originalPrice: 22,
+    category: 'resume',
+    images: ['https://via.placeholder.com/800x500.png?text=Modern+Resume+Template'],
+    rating: 4.9,
+    reviewCount: 105,
     featured: true,
+    requiresDetails: true,
   },
   {
     _id: '4',
-    title: 'Premium Icon Pack Pro',
-    description: '1000+ scalable icons for modern web and mobile applications.',
-    price: 15,
-    originalPrice: 29,
-    category: 'icons_illustration',
-    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuBhYPR2OXgwMXMRJmc0PxTP5Y_rds7mj1qLAA6_iJgkLtZJTgRSfvmgM0iaAJow6D_G0Gu7v6to_yRZkor5TqHibDyYLI2jYbmAQeQX9ITMZTa7QWs0Wv1VB3OtD4mJoMgyvRnSCmWUXRR-M7G6y8fDusQw8rGDLdXAr1aIJForxZ7T-VAMSP5xwhF9eduSgOel_TtcDeaS3WbsuvjxHa6ByJAq_nHSrP-DsSf_pZvZGvGALG_Mq1xBxEaYkDgmx7Yk0pvPLoLIMkxg'],
+    title: 'Creative Resume Pack',
+    description: 'Fast-download resume bundle with resume, cover letter, and references page.',
+    price: 8,
+    originalPrice: 16,
+    category: 'resume',
+    images: ['https://via.placeholder.com/800x500.png?text=Creative+Resume+Pack'],
     rating: 4.7,
-    reviewCount: 156,
+    reviewCount: 52,
     featured: false,
+    requiresDetails: false,
   },
   {
     _id: '5',
-    title: 'Modern Website Template',
-    description: 'Fully responsive website template for agencies and portfolios.',
-    price: 39,
-    originalPrice: 79,
-    category: 'website_template',
-    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuAX_qHTjut6U6MR_24dOfJsjWD-UpsrqvU94HhayAHevH6AUjG3SeY3atr0HQESqFpy2M2u1Q9pbmGwMUlAcrAceAlI8GnEozUK0F_QZs3yVLgAIvRGiXAmJl0vW6HRBBlxUDSmcnHO16fbp1w36iPmW1bKAHW--Sf9hiYHPPwH03V-XYXmHexLB4vLXDChbhkgDx12jsxdCgEoFPjX6YdsQRdKga0JOFZoRwcjM0gy_a5Qi92OpHoF-2RfnJRZAxzm2ijuZAOYtk-t'],
-    rating: 4.6,
-    reviewCount: 78,
+    title: 'Website Layout Design Kit',
+    description: 'Modern layout designs for landing pages, portfolios, and service websites.',
+    price: 20,
+    originalPrice: 40,
+    category: 'layout',
+    images: ['https://via.placeholder.com/800x500.png?text=Website+Layout+Design+Kit'],
+    rating: 4.8,
+    reviewCount: 98,
     featured: true,
+    requiresDetails: false,
   },
   {
     _id: '6',
-    title: 'Email Marketing Bundle',
-    description: 'Professional email templates for newsletters and campaigns.',
-    price: 9,
-    originalPrice: 19,
-    category: 'email_template',
-    images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuDNUxr7Lim0nqidCfkLch-Mk5h-YJ__Ybv88tlWnGvIHpGMD4IfdcpbilhjOoG7OaqmEM9M4ENsOhCy6jJ5tIZepJ-B_IIC-K1rnBgQu6adKz2vbQTzKPabmf3qIeyFBSJb5jzXOCQf1BshAynjcx1oAe3hmw276szWZNNhGlAWMoITX2nCTKKB-ovpSHL8-PkJM_fY-1lhzD9HSpMmVvltOOJA3Q8TXTxvWoavLxgDepRFXJinPB3EKTDI5sJEA4EKH2tcfpQEfcfG'],
+    title: 'Branding Layout Customizer',
+    description: 'Design layout set that can be personalized with your brand colors and copy.',
+    price: 18,
+    originalPrice: 36,
+    category: 'layout',
+    images: ['https://via.placeholder.com/800x500.png?text=Branding+Layout+Customizer'],
     rating: 4.5,
-    reviewCount: 62,
+    reviewCount: 37,
     featured: false,
+    requiresDetails: true,
+  },
+  {
+    _id: '7',
+    title: 'Lifestyle Photo Collection',
+    description: 'High-resolution lifestyle photo bundle for marketing, social media, and blogs.',
+    price: 16,
+    originalPrice: 30,
+    category: 'photos',
+    images: ['https://via.placeholder.com/800x500.png?text=Lifestyle+Photo+Collection'],
+    rating: 4.7,
+    reviewCount: 73,
+    featured: false,
+    requiresDetails: false,
+  },
+  {
+    _id: '8',
+    title: 'Custom Photo Editing Session',
+    description: 'Personalized photo editing service with custom retouch requests and style guidance.',
+    price: 22,
+    originalPrice: 45,
+    category: 'photos',
+    images: ['https://via.placeholder.com/800x500.png?text=Custom+Photo+Editing'],
+    rating: 4.9,
+    reviewCount: 41,
+    featured: true,
+    requiresDetails: true,
   },
 ];
+
 
