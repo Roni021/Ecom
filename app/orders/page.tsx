@@ -77,14 +77,14 @@ export default function OrdersPage() {
 
   if (loading || !isAuthenticated) {
     return (
-      <div className="bg-[var(--background-light)] dark:bg-[var(--background-dark)] min-h-screen flex items-center justify-center">
+      <div className="theme-page min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
       </div>
     );
   }
 
   return (
-    <div className="bg-[var(--background-light)] dark:bg-[var(--background-dark)] min-h-screen">
+    <div className="theme-page min-h-screen">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-bold mb-8">My Orders</h1>
 
@@ -93,10 +93,10 @@ export default function OrdersPage() {
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
           </div>
         ) : orders.length === 0 ? (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
-            <span className="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600 mb-4">receipt_long</span>
+          <div className="theme-surface theme-surface rounded-2xl border border-theme-surface border-theme-surface p-12 text-center">
+            <span className="material-symbols-outlined text-6xl theme-text dark:theme-text mb-4">receipt_long</span>
             <h2 className="text-xl font-bold mb-2">No orders yet</h2>
-            <p className="text-slate-500 dark:text-slate-400 mb-6">Start shopping to see your orders here!</p>
+            <p className="theme-text dark:theme-text mb-6">Start shopping to see your orders here!</p>
             <Link
               href="/products"
               className="inline-block bg-[var(--primary)] text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:scale-105 transition-all"
@@ -109,16 +109,16 @@ export default function OrdersPage() {
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+                className="theme-surface theme-surface rounded-2xl border border-theme-surface border-theme-surface overflow-hidden"
               >
-                <div className="p-6 border-b border-slate-100 dark:border-slate-700">
+                <div className="p-6 border-b border-slate-100 border-theme-surface">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Order Number</p>
+                      <p className="text-sm theme-text dark:theme-text">Order Number</p>
                       <p className="font-bold text-lg">{order.orderNumber || order._id}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Date</p>
+                      <p className="text-sm theme-text dark:theme-text">Date</p>
                       <p className="font-medium">
                         {new Date(order.createdAt).toLocaleDateString('en-US', {
                           year: 'numeric',
@@ -128,7 +128,7 @@ export default function OrdersPage() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Total</p>
+                      <p className="text-sm theme-text dark:theme-text">Total</p>
                       <p className="font-bold text-xl text-[var(--primary)]">${order.total?.toFixed(2) || '0.00'}</p>
                     </div>
                     <span className={`px-4 py-2 rounded-full text-sm font-semibold capitalize ${getStatusColor(order.status)}`}>
@@ -141,7 +141,7 @@ export default function OrdersPage() {
                   <div className="space-y-3">
                     {order.items?.map((item, idx) => (
                       <div key={idx} className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 overflow-hidden">
+                        <div className="w-12 h-12 rounded-lg theme-surface dark:bg-slate-700 overflow-hidden">
                           {item.product?.images?.[0] ? (
                             <img
                               src={item.product.images[0]}
@@ -150,13 +150,13 @@ export default function OrdersPage() {
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                              <span className="material-symbols-outlined text-slate-400">image</span>
+                              <span className="material-symbols-outlined theme-text">image</span>
                             </div>
                           )}
                         </div>
                         <div className="flex-1">
                           <p className="font-medium line-clamp-1">{item.product?.title || 'Product'}</p>
-                          <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
+                          <p className="text-sm theme-text">Qty: {item.quantity}</p>
                         </div>
                         <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
                       </div>

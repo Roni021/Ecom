@@ -71,18 +71,18 @@ export default function ProductsPage() {
 
   if (loading) {
     return (
-      <div className="bg-[var(--background-light)] dark:bg-[var(--background-dark)] min-h-screen flex items-center justify-center">
+      <div className="theme-page min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
       </div>
     );
   }
 
   return (
-    <div className="bg-[var(--background-light)] dark:bg-[var(--background-dark)] min-h-screen">
+    <div className="theme-page min-h-screen">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12">
           <h1 className="text-4xl font-bold mb-4">All Products</h1>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="theme-text dark:theme-text">
             Browse our complete collection of premium digital assets
           </p>
         </div>
@@ -91,7 +91,7 @@ export default function ProductsPage() {
           {products.map((product) => (
             <div
               key={product._id}
-              className="group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-xl transition-all"
+              className="group theme-surface theme-surface rounded-2xl border border-theme-surface border-theme-surface overflow-hidden hover:shadow-xl transition-all"
             >
               <div className="aspect-video relative overflow-hidden">
                 <img
@@ -99,24 +99,24 @@ export default function ProductsPage() {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   src={product.images[0] || 'https://via.placeholder.com/400x300'}
                 />
-                <div className="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur px-2 py-1 rounded-lg text-xs font-bold shadow-sm">
+                <div className="absolute top-4 right-4 theme-surface/90 theme-surface/90 backdrop-blur px-2 py-1 rounded-lg text-xs font-bold shadow-sm">
                   ${product.price}
                 </div>
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-1 mb-2 text-amber-500">
                   <span className="material-symbols-outlined text-sm fill-1">star</span>
-                  <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                  <span className="text-xs font-bold theme-text dark:theme-text">
                     {product.rating}
                   </span>
-                  <span className="text-xs text-slate-500 font-normal">
+                  <span className="text-xs theme-text font-normal">
                     ({product.reviewCount} reviews)
                   </span>
                 </div>
                 <h3 className="text-lg font-bold mb-2 group-hover:text-[var(--primary)] transition-colors">
                   {product.title}
                 </h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm mb-4 line-clamp-2">
+                <p className="theme-text dark:theme-text text-sm mb-4 line-clamp-2">
                   {product.description}
                 </p>
                 <div className="flex gap-2">
@@ -137,7 +137,7 @@ export default function ProductsPage() {
                   </button>
                   <Link
                     href="/checkout"
-                    className="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg text-sm font-bold text-center hover:bg-slate-200 dark:hover:bg-slate-600 transition-all"
+                    className="flex-1 theme-surface dark:bg-slate-700 theme-text dark:theme-text px-4 py-2 rounded-lg text-sm font-bold text-center hover:bg-slate-200 dark:hover:bg-slate-600 transition-all"
                   >
                     Buy Now
                   </Link>

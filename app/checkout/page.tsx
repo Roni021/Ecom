@@ -91,7 +91,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="bg-[var(--background-light)] dark:bg-[var(--background-dark)] min-h-screen">
+    <div className="theme-page min-h-screen">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-bold mb-8">Checkout</h1>
         
@@ -106,8 +106,8 @@ export default function CheckoutPage() {
           <div className="lg:col-span-7">
             <form onSubmit={handlePayment}>
               {/* Payment Method Selection */}
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden mb-6">
-                <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+              <div className="theme-surface theme-surface rounded-xl border border-theme-surface dark:border-slate-800 shadow-sm overflow-hidden mb-6">
+                <div className="p-4 border-b border-theme-surface dark:border-slate-800">
                   <h2 className="text-xl font-bold">Payment Method</h2>
                 </div>
                 
@@ -117,8 +117,8 @@ export default function CheckoutPage() {
                     onClick={() => setPaymentMethod("card")}
                     className={`flex-1 py-3 px-4 rounded-lg border font-bold flex items-center justify-center gap-2 transition-all ${
                       paymentMethod === "card"
-                        ? "bg-primary/10 border-primary text-primary"
-                        : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500"
+                        ? "theme-accent/10 border-theme-accent theme-accent-text"
+                        : "bg-slate-50 theme-surface border-theme-surface border-theme-surface theme-text"
                     }`}
                   >
                     <span className="material-symbols-outlined text-xl">credit_card</span>
@@ -130,8 +130,8 @@ export default function CheckoutPage() {
                     onClick={() => setPaymentMethod("upi")}
                     className={`flex-1 py-3 px-4 rounded-lg border font-bold flex items-center justify-center gap-2 transition-all ${
                       paymentMethod === "upi"
-                        ? "bg-primary/10 border-primary text-primary"
-                        : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500"
+                        ? "theme-accent/10 border-theme-accent theme-accent-text"
+                        : "bg-slate-50 theme-surface border-theme-surface border-theme-surface theme-text"
                     }`}
                   >
                     <span className="material-symbols-outlined text-xl">smartphone</span>
@@ -143,8 +143,8 @@ export default function CheckoutPage() {
                     onClick={() => setPaymentMethod("paypal")}
                     className={`flex-1 py-3 px-4 rounded-lg border font-bold flex items-center justify-center gap-2 transition-all ${
                       paymentMethod === "paypal"
-                        ? "bg-primary/10 border-primary text-primary"
-                        : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500"
+                        ? "theme-accent/10 border-theme-accent theme-accent-text"
+                        : "bg-slate-50 theme-surface border-theme-surface border-theme-surface theme-text"
                     }`}
                   >
                     <span className="material-symbols-outlined text-xl">account_balance_wallet</span>
@@ -162,7 +162,7 @@ export default function CheckoutPage() {
                         value={cardName}
                         onChange={(e) => setCardName(e.target.value)}
                         placeholder="Alex Rivera"
-                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary outline-none"
+                        className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-primary outline-none"
                         required
                       />
                     </div>
@@ -175,7 +175,7 @@ export default function CheckoutPage() {
                         onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
                         placeholder="0000 0000 0000 0000"
                         maxLength={19}
-                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary outline-none"
+                        className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-primary outline-none"
                         required
                       />
                     </div>
@@ -189,7 +189,7 @@ export default function CheckoutPage() {
                           onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
                           placeholder="MM/YY"
                           maxLength={5}
-                          className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary outline-none"
+                          className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-primary outline-none"
                           required
                         />
                       </div>
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
                           onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
                           placeholder="123"
                           maxLength={4}
-                          className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary outline-none"
+                          className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-primary outline-none"
                           required
                         />
                       </div>
@@ -220,11 +220,11 @@ export default function CheckoutPage() {
                         value={upiId}
                         onChange={(e) => setUpiId(e.target.value)}
                         placeholder="yourname@upi"
-                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-primary outline-none"
+                        className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-primary outline-none"
                         required
                       />
                     </div>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm theme-text">
                       You will receive a payment request on your UPI app
                     </p>
                   </div>
@@ -233,7 +233,7 @@ export default function CheckoutPage() {
                 {/* PayPal */}
                 {paymentMethod === "paypal" && (
                   <div className="p-6 space-y-4 text-center">
-                    <p className="text-slate-600 dark:text-slate-400">
+                    <p className="theme-text dark:theme-text">
                       You will be redirected to PayPal to complete your purchase securely.
                     </p>
                     <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
@@ -250,7 +250,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={loading || items.length === 0}
-                className="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-4 theme-accent text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>
@@ -265,7 +265,7 @@ export default function CheckoutPage() {
                 )}
               </button>
               
-              <p className="mt-4 text-center text-xs text-slate-400 dark:text-slate-500">
+              <p className="mt-4 text-center text-xs theme-text dark:theme-text">
                 By clicking complete purchase, you agree to our Terms of Service.
               </p>
             </form>
@@ -274,20 +274,20 @@ export default function CheckoutPage() {
           {/* Order Summary */}
           <div className="lg:col-span-5">
             <div className="sticky top-10">
-              <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-lg overflow-hidden">
-                <div className="p-6 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+              <div className="theme-surface theme-surface rounded-xl border border-theme-surface dark:border-slate-800 shadow-lg overflow-hidden">
+                <div className="p-6 bg-slate-50 theme-surface/50 border-b border-theme-surface dark:border-slate-800">
                   <h3 className="text-lg font-bold">Order Summary</h3>
                 </div>
                 
                 <div className="p-6">
                   {items.length === 0 ? (
-                    <p className="text-center text-slate-500 py-8">Your cart is empty</p>
+                    <p className="text-center theme-text py-8">Your cart is empty</p>
                   ) : (
                     <>
                       <div className="space-y-4 mb-6">
                         {items.map((item, index) => (
                           <div key={index} className="flex items-start gap-4">
-                            <div className="w-16 h-16 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden shrink-0">
+                            <div className="w-16 h-16 rounded-lg theme-surface theme-surface overflow-hidden shrink-0">
                               {item.product.images && item.product.images[0] ? (
                                 <img 
                                   src={item.product.images[0]} 
@@ -296,13 +296,13 @@ export default function CheckoutPage() {
                                 />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center">
-                                  <span className="material-symbols-outlined text-slate-400">image</span>
+                                  <span className="material-symbols-outlined theme-text dark:theme-text">image</span>
                                 </div>
                               )}
                             </div>
                             <div className="flex-1">
                               <h4 className="font-bold text-sm line-clamp-1">{item.product.title}</h4>
-                              <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
+                              <p className="text-xs theme-text">Qty: {item.quantity}</p>
                             </div>
                             <div className="text-right">
                               <p className="font-bold text-sm">${(item.product.price * item.quantity).toFixed(2)}</p>
@@ -313,18 +313,18 @@ export default function CheckoutPage() {
 
                       <div className="space-y-3 py-6 border-y border-slate-100 dark:border-slate-800">
                         <div className="flex justify-between text-sm">
-                          <span className="text-slate-500 dark:text-slate-400">Subtotal</span>
+                          <span className="theme-text dark:theme-text">Subtotal</span>
                           <span className="font-medium">${subtotal.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-slate-500 dark:text-slate-400">Taxes &amp; Fees</span>
+                          <span className="theme-text dark:theme-text">Taxes &amp; Fees</span>
                           <span className="font-medium">${tax.toFixed(2)}</span>
                         </div>
                       </div>
 
                       <div className="flex justify-between items-center py-6">
                         <span className="text-lg font-bold">Total</span>
-                        <span className="text-3xl font-black text-primary">${total.toFixed(2)}</span>
+                        <span className="text-3xl font-black theme-accent-text">${total.toFixed(2)}</span>
                       </div>
                     </>
                   )}

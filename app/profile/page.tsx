@@ -77,25 +77,25 @@ export default function ProfilePage() {
 
   if (loading || !isAuthenticated) {
     return (
-      <div className="bg-[var(--background-light)] dark:bg-[var(--background-dark)] min-h-screen flex items-center justify-center">
+      <div className="theme-page min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
       </div>
     );
   }
 
   return (
-    <div className="bg-[var(--background-light)] dark:bg-[var(--background-dark)] min-h-screen">
+    <div className="theme-page min-h-screen">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Profile Header */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 mb-8">
+        <div className="theme-surface theme-surface rounded-2xl border border-theme-surface border-theme-surface p-8 mb-8">
           <div className="flex items-center gap-6">
             <div className="w-20 h-20 rounded-full bg-[var(--primary)] flex items-center justify-center text-white text-3xl font-bold">
               {user?.name?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div>
               <h1 className="text-2xl font-bold">{user?.name || 'User'}</h1>
-              <p className="text-slate-500 dark:text-slate-400">{user?.email || 'user@example.com'}</p>
-              <span className="inline-block mt-2 px-3 py-1 bg-[var(--primary)]/10 text-[var(--primary)] text-sm font-semibold rounded-full capitalize">
+              <p className="theme-text dark:theme-text">{user?.email || 'user@example.com'}</p>
+              <span className="inline-block mt-2 px-3 py-1 theme-accent/10 text-[var(--primary)] text-sm font-semibold rounded-full capitalize">
                 {user?.role || 'User'}
               </span>
             </div>
@@ -103,13 +103,13 @@ export default function ProfilePage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-slate-200 dark:border-slate-700">
+        <div className="flex gap-4 mb-8 border-b border-theme-surface border-theme-surface">
           <button
             onClick={() => setActiveTab('orders')}
             className={`pb-4 px-2 font-semibold transition-colors ${
               activeTab === 'orders'
                 ? 'text-[var(--primary)] border-b-2 border-[var(--primary)]'
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                : 'theme-text hover:theme-text dark:hover:theme-text'
             }`}
           >
             My Orders
@@ -119,7 +119,7 @@ export default function ProfilePage() {
             className={`pb-4 px-2 font-semibold transition-colors ${
               activeTab === 'settings'
                 ? 'text-[var(--primary)] border-b-2 border-[var(--primary)]'
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                : 'theme-text hover:theme-text dark:hover:theme-text'
             }`}
           >
             Settings
@@ -134,10 +134,10 @@ export default function ProfilePage() {
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
               </div>
             ) : orders.length === 0 ? (
-              <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center">
-                <span className="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600 mb-4">receipt_long</span>
+              <div className="theme-surface theme-surface rounded-2xl border border-theme-surface border-theme-surface p-12 text-center">
+                <span className="material-symbols-outlined text-6xl theme-text dark:theme-text mb-4">receipt_long</span>
                 <h2 className="text-xl font-bold mb-2">No orders yet</h2>
-                <p className="text-slate-500 dark:text-slate-400 mb-6">Start shopping to see your orders here!</p>
+                <p className="theme-text dark:theme-text mb-6">Start shopping to see your orders here!</p>
                 <a
                   href="/products"
                   className="inline-block bg-[var(--primary)] text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:scale-105 transition-all"
@@ -150,16 +150,16 @@ export default function ProfilePage() {
                 {orders.map((order) => (
                   <div
                     key={order._id}
-                    className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+                    className="theme-surface theme-surface rounded-2xl border border-theme-surface border-theme-surface overflow-hidden"
                   >
-                    <div className="p-6 border-b border-slate-100 dark:border-slate-700">
+                    <div className="p-6 border-b border-slate-100 border-theme-surface">
                       <div className="flex flex-wrap items-center justify-between gap-4">
                         <div>
-                          <p className="text-sm text-slate-500 dark:text-slate-400">Order Number</p>
+                          <p className="text-sm theme-text dark:theme-text">Order Number</p>
                           <p className="font-bold text-lg">{order.orderNumber || order._id}</p>
                         </div>
                         <div>
-                          <p className="text-sm text-slate-500 dark:text-slate-400">Date</p>
+                          <p className="text-sm theme-text dark:theme-text">Date</p>
                           <p className="font-medium">
                             {new Date(order.createdAt).toLocaleDateString('en-US', {
                               year: 'numeric',
@@ -169,7 +169,7 @@ export default function ProfilePage() {
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-slate-500 dark:text-slate-400">Total</p>
+                          <p className="text-sm theme-text dark:theme-text">Total</p>
                           <p className="font-bold text-xl text-[var(--primary)]">${order.total?.toFixed(2) || '0.00'}</p>
                         </div>
                         <span className={`px-4 py-2 rounded-full text-sm font-semibold capitalize ${getStatusColor(order.status)}`}>
@@ -182,7 +182,7 @@ export default function ProfilePage() {
                       <div className="space-y-3">
                         {order.items?.map((item, idx) => (
                           <div key={idx} className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 overflow-hidden">
+                            <div className="w-12 h-12 rounded-lg theme-surface dark:bg-slate-700 overflow-hidden">
                               {item.product?.images?.[0] ? (
                                 <img
                                   src={item.product.images[0]}
@@ -191,13 +191,13 @@ export default function ProfilePage() {
                                 />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center">
-                                  <span className="material-symbols-outlined text-slate-400">image</span>
+                                  <span className="material-symbols-outlined theme-text">image</span>
                                 </div>
                               )}
                             </div>
                             <div className="flex-1">
                               <p className="font-medium line-clamp-1">{item.product?.title || 'Product'}</p>
-                              <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
+                              <p className="text-sm theme-text">Qty: {item.quantity}</p>
                             </div>
                             <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
                           </div>
@@ -213,7 +213,7 @@ export default function ProfilePage() {
 
         {/* Settings Tab */}
         {activeTab === 'settings' && (
-          <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
+          <div className="theme-surface theme-surface rounded-2xl border border-theme-surface border-theme-surface p-8">
             <h2 className="text-xl font-bold mb-6">Account Settings</h2>
             <div className="space-y-6">
               <div>
@@ -221,7 +221,7 @@ export default function ProfilePage() {
                 <input
                   type="text"
                   defaultValue={user?.name || ''}
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-[var(--primary)] outline-none"
+                  className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-(--primary) outline-none"
                 />
               </div>
               <div>
@@ -230,16 +230,16 @@ export default function ProfilePage() {
                   type="email"
                   defaultValue={user?.email || ''}
                   disabled
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-500 cursor-not-allowed"
+                  className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-slate-50 theme-surface theme-text cursor-not-allowed"
                 />
-                <p className="text-xs text-slate-500 mt-1">Email cannot be changed</p>
+                <p className="text-xs theme-text mt-1">Email cannot be changed</p>
               </div>
               <button className="bg-[var(--primary)] text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:scale-105 transition-all">
                 Save Changes
               </button>
             </div>
 
-            <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
+            <div className="mt-12 pt-8 border-t border-theme-surface border-theme-surface">
               <h2 className="text-xl font-bold mb-6">Change Password</h2>
               <div className="space-y-4">
                 <div>
@@ -247,7 +247,7 @@ export default function ProfilePage() {
                   <input
                     type="password"
                     placeholder="Enter current password"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-[var(--primary)] outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-(--primary) outline-none"
                   />
                 </div>
                 <div>
@@ -255,7 +255,7 @@ export default function ProfilePage() {
                   <input
                     type="password"
                     placeholder="Enter new password"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-[var(--primary)] outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-(--primary) outline-none"
                   />
                 </div>
                 <div>
@@ -263,7 +263,7 @@ export default function ProfilePage() {
                   <input
                     type="password"
                     placeholder="Confirm new password"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent focus:ring-2 focus:ring-[var(--primary)] outline-none"
+                    className="w-full px-4 py-3 rounded-lg border border-theme-surface border-theme-surface bg-transparent focus:ring-2 focus:ring-(--primary) outline-none"
                   />
                 </div>
                 <button className="bg-slate-800 dark:bg-slate-700 text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:scale-105 transition-all">

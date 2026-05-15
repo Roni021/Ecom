@@ -1,30 +1,169 @@
 @import "tailwindcss";
 
-/* @theme {
+@theme {
   --color-primary: #2547f4;
-  --color-background-light: #bacdf1;
-  --color-background-dark: #101322;
+  --color-primary: #1d4ed8;
+  --color-primary-100: #e6f0ff;
+  --color-background-light: #f8fafc;
+  --color-background-dark: #071426;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f5f9;
+  --color-surface-dark: #0b1220;
+  --color-muted: #6b7280;
+  --color-muted-dark: #94a3b8;
+  --color-text-light: #0f172a;
+  --color-text-dark: #e6eef8;
   --font-display: var(--font-geist-sans);
-} */
+}
 
 :root {
-  --primary: #2547f4;
-  --background-light: #bacdf1;
-  --background-dark: #02030985;
+  --primary: #1d4ed8;
+  --background-light: #f8fafc;
+  --background-dark: #071426;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --surface-dark: #0b1220;
+  --muted: #6b7280;
+  --muted-dark: #94a3b8;
+  --text-light: #0f172a;
+  --text-dark: #e6eef8;
   --radius: 0.5rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
 }
 
-/* Base styles */
+html {
+  color-scheme: light;
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+html.dark {
+  color-scheme: dark;
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
 body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  min-height: 100vh;
+  background-color: inherit;
+  color: inherit;
 }
+
+.bg-background-light {
+  background-color: var(--color-background-light);
+}
+
+.bg-background-dark {
+  background-color: var(--color-background-dark);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.border-primary {
+  border-color: var(--color-primary);
+}
+
+.dark .text-primary {
+  color: var(--color-primary);
+}
+
+.dark .bg-primary {
+  background-color: var(--color-primary);
+}
+
+/* Compatibility rules for legacy class tokens used across the codebase
+   (some files use `bg-(--primary)` style tokens that aren't valid Tailwind
+   — these rules map them to the intended CSS variables so theme switching works) */
+.bg-\(--primary\) { background-color: var(--primary); }
+.bg-\(--primary\)\/10 { background-color: rgba(37,71,244,0.10); }
+.bg-\(--primary\)\/20 { background-color: rgba(37,71,244,0.20); }
+.bg-\(--primary\)\/5 { background-color: rgba(37,71,244,0.05); }
+.text-\(--primary\) { color: var(--primary); }
+.border-\(--primary\) { border-color: var(--primary); }
+.bg-\(--background-light\) { background-color: var(--background-light); }
+.dark .bg-\(--background-dark\) { background-color: var(--background-dark); }
+.bg-\(--background-dark\) { background-color: var(--background-dark); }
+
+/* Fallbacks for a few common patterns */
+.hover\:bg-\(--primary\):hover { background-color: var(--primary); }
+.hover\:bg-\(--primary\)\/10:hover { background-color: rgba(37,71,244,0.10); }
+
+.dark .border-primary {
+  border-color: var(--color-primary);
+}
+
+/* Override common Tailwind slate utilities to use our theme variables
+   This ensures components that still use `text-slate-*` / `bg-white` etc.
+   follow the global theme without touching every file. */
+.text-slate-900 { color: var(--text-light) !important; }
+.text-slate-800 { color: #0b122b !important; }
+.text-slate-700 { color: #0f172a !important; }
+.text-slate-600 { color: var(--muted) !important; }
+.text-slate-500 { color: var(--muted) !important; }
+.text-slate-400 { color: #9ca3af !important; }
+
+.dark .text-slate-100 { color: var(--text-dark) !important; }
+.dark .text-slate-300 { color: var(--muted-dark) !important; }
+.dark .text-slate-400 { color: var(--muted-dark) !important; }
+.dark .text-slate-500 { color: #94a3b8 !important; }
+
+.bg-white { background-color: var(--surface) !important; }
+.bg-slate-100 { background-color: var(--surface-2) !important; }
+.dark .bg-slate-800 { background-color: var(--surface-dark) !important; }
+.dark .bg-slate-900 { background-color: #071426 !important; }
+.border-slate-200 { border-color: rgba(15,23,42,0.06) !important; }
+.dark .border-slate-700 { border-color: rgba(255,255,255,0.03) !important; }
+
+/* Ensure primary uses the updated variable */
+.text-primary { color: var(--primary) !important; }
+.bg-primary { background-color: var(--primary) !important; }
+.border-primary { border-color: var(--primary) !important; }
+
+/* Semantic theme classes for unified usage */
+.theme-page { 
+  background: linear-gradient(135deg, var(--background-light) 0%, #f1f5f9 50%, var(--background-light) 100%);
+  color: var(--text-light);
+}
+.dark .theme-page { 
+  background: linear-gradient(135deg, var(--background-dark) 0%, #1e293b 50%, var(--background-dark) 100%);
+  color: var(--text-dark);
+}
+.theme-surface { background-color: var(--surface); color: var(--text-light); }
+.dark .theme-surface { background-color: var(--surface-dark); color: var(--text-dark); }
+.theme-accent { background-color: var(--primary); color: #fff; }
+.theme-accent-text { color: var(--primary); }
+.theme-muted { color: var(--muted); }
+.dark .theme-muted { color: var(--muted-dark); }
+
+/* Utility to apply page surface with padding if needed */
+.theme-container { background-color: inherit; }
+
+/* Ensure headings follow semantic theme text color in light/dark modes */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-light);
+}
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: var(--text-dark);
+}
+
+/* For semantic containers, prefer inherited heading color */
+.theme-page h1, .theme-page h2, .theme-page h3, .theme-page h4, .theme-page h5, .theme-page h6 {
+  color: inherit;
+}
+
 
 /* Custom utilities */
 @layer utilities {
   .nav-link {
-    @apply text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#2547f4] transition-colors;
+    @apply text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary transition-colors;
   }
   
   .hero-gradient {
@@ -33,6 +172,140 @@ body {
   
   .dark .hero-gradient {
     background: linear-gradient(135deg, var(--background-dark) 0%, #09172d 100%);
+  }
+
+  /* Interactive Multi-Color Gradient Backgrounds */
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes gradient-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Interactive gradient with flowing colors */
+  .interactive-gradient {
+    background: linear-gradient(
+      -45deg,
+      #1d4ed8,
+      #3b82f6,
+      #1e40af,
+      #1d4ed8
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  .dark .interactive-gradient {
+    background: linear-gradient(
+      -45deg,
+      #0f172a,
+      #1e3a8a,
+      #3b82f6,
+      #1d4ed8
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  /* Dual tone gradient (Light to accent) */
+  .gradient-dual {
+    background: linear-gradient(135deg, #f8fafc 0%, #3b82f6 50%, #1d4ed8 100%);
+  }
+
+  .dark .gradient-dual {
+    background: linear-gradient(135deg, #071426 0%, #1e3a8a 50%, #3b82f6 100%);
+  }
+
+  /* Triple color mesh gradient */
+  .gradient-mesh {
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(61, 130, 246, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(29, 78, 216, 0.3) 0%, transparent 50%),
+      radial-gradient(circle at 40% 0%, rgba(96, 165, 250, 0.2) 0%, transparent 50%),
+      linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+    background-size: 100% 100%;
+  }
+
+  .dark .gradient-mesh {
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(96, 165, 250, 0.4) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+      radial-gradient(circle at 40% 0%, rgba(30, 58, 138, 0.3) 0%, transparent 50%),
+      linear-gradient(135deg, #071426 0%, #0f172a 100%);
+    background-size: 100% 100%;
+  }
+
+  /* Vibrant animated gradient */
+  .gradient-vibrant {
+    background: linear-gradient(
+      45deg,
+      #f8fafc,
+      #e0e7ff,
+      #dbeafe,
+      #f0f9ff,
+      #f8fafc
+    );
+    background-size: 500% 500%;
+    animation: gradient-shift 20s ease infinite;
+  }
+
+  .dark .gradient-vibrant {
+    background: linear-gradient(
+      45deg,
+      #0b1220,
+      #1e3a8a,
+      #1e40af,
+      #0f172a,
+      #0b1220
+    );
+    background-size: 500% 500%;
+    animation: gradient-shift 20s ease infinite;
+  }
+
+  /* Soft radial gradient blend */
+  .gradient-radial {
+    background: 
+      radial-gradient(ellipse at 30% 40%, rgba(29, 78, 216, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+      linear-gradient(to bottom right, #f8fafc 0%, #f1f5f9 100%);
+  }
+
+  .dark .gradient-radial {
+    background: 
+      radial-gradient(ellipse at 30% 40%, rgba(96, 165, 250, 0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(59, 130, 246, 0.25) 0%, transparent 50%),
+      linear-gradient(to bottom right, #071426 0%, #0b1220 100%);
+  }
+
+  /* Wave gradient effect */
+  .gradient-wave {
+    background: linear-gradient(
+      90deg,
+      #f8fafc 0%,
+      #e0e7ff 25%,
+      #dbeafe 50%,
+      #e0e7ff 75%,
+      #f8fafc 100%
+    );
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  .dark .gradient-wave {
+    background: linear-gradient(
+      90deg,
+      #0b1220 0%,
+      #1e3a8a 25%,
+      #1e40af 50%,
+      #1e3a8a 75%,
+      #0b1220 100%
+    );
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
   }
 }
 

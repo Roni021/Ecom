@@ -134,7 +134,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     
     if (token) {
       try {
-        const res = await fetch(`/api/cart?productId=${productId}`, {
+        const res = await fetch(`/api/cart?productId=${encodeURIComponent(productId)}`, {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -204,12 +204,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     
     if (token) {
       try {
-        await fetch('/api/cart?productId=', {
+        const res = await fetch('/api/cart', {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        if (!res.ok) {
+          throw new Error('Failed to clear cart');
+        }
       } catch (error) {
         console.error('Failed to clear cart:', error);
       }

@@ -18,11 +18,11 @@ export default function CartPage() {
   }, [isAuthenticated]);
 
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+    <div className="theme-page font-display theme-text dark:theme-text min-h-screen">
       <main className="max-w-7xl mx-auto px-6 lg:px-20 py-12">
         <div className="mb-10">
           <h2 className="text-4xl font-black tracking-tight mb-2">Your Cart</h2>
-          <p className="text-slate-500 dark:text-slate-400">
+          <p className="theme-text dark:theme-text">
             {items.length > 0 
               ? `Review your ${items.length} item${items.length > 1 ? 's' : ''} before proceeding to checkout.`
               : 'Your cart is empty. Start shopping!'
@@ -32,11 +32,11 @@ export default function CartPage() {
 
         {items.length === 0 ? (
           <div className="text-center py-16">
-            <span className="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-600 mb-4">shopping_cart</span>
-            <p className="text-slate-500 mb-6">Your cart is empty</p>
+            <span className="material-symbols-outlined text-6xl theme-text dark:theme-text mb-4">shopping_cart</span>
+            <p className="theme-text mb-6">Your cart is empty</p>
             <Link 
               href="/products" 
-              className="inline-block bg-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-primary/90 transition-colors"
+              className="inline-block theme-accent text-white px-8 py-3 rounded-xl font-bold hover:theme-accent/90 transition-colors"
             >
               Browse Products
             </Link>
@@ -46,8 +46,8 @@ export default function CartPage() {
             {/* Left Column: Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {items.map((item, index) => (
-                <div key={index} className="group relative flex flex-col sm:flex-row items-center gap-6 bg-white dark:bg-slate-900/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
+                <div key={index} className="group relative flex flex-col sm:flex-row items-center gap-6 theme-surface theme-surface/50 p-6 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="h-32 w-32 shrink-0 overflow-hidden rounded-lg theme-surface theme-surface">
                     {item.product.images && item.product.images[0] ? (
                       <img 
                         alt={item.product.title} 
@@ -56,7 +56,7 @@ export default function CartPage() {
                       />
                     ) : (
                       <div className="h-full w-full flex items-center justify-center">
-                        <span className="material-symbols-outlined text-4xl text-slate-400">image</span>
+                        <span className="material-symbols-outlined text-4xl theme-text">image</span>
                       </div>
                     )}
                   </div>
@@ -64,15 +64,15 @@ export default function CartPage() {
                     <div>
                       <div className="flex justify-between items-start">
                         <h3 className="text-lg font-bold">{item.product.title}</h3>
-                        <p className="text-lg font-bold text-primary">${item.product.price.toFixed(2)}</p>
+                        <p className="text-lg font-bold theme-accent-text">${item.product.price.toFixed(2)}</p>
                       </div>
-                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+                      <p className="text-sm theme-text dark:theme-text mt-1 flex items-center gap-1">
                         <span className="material-symbols-outlined text-sm">license</span> Digital Download
                       </p>
                     </div>
                     <div className="mt-4">
                       <div className="flex flex-wrap items-center gap-6">
-                        <div className="flex items-center border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bg-slate-50 dark:bg-slate-800">
+                        <div className="flex items-center border border-theme-surface border-theme-surface rounded-lg overflow-hidden bg-slate-50 theme-surface">
                           <button 
                             onClick={() => updateQuantity(item.product._id, item.quantity - 1)}
                             className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors px-2"
@@ -80,7 +80,7 @@ export default function CartPage() {
                           >
                             <span className="material-symbols-outlined text-sm block">remove</span>
                           </button>
-                          <span className="px-3 py-1 text-sm font-bold border-x border-slate-200 dark:border-slate-700">{item.quantity}</span>
+                          <span className="px-3 py-1 text-sm font-bold border-x border-theme-surface border-theme-surface">{item.quantity}</span>
                           <button 
                             onClick={() => updateQuantity(item.product._id, item.quantity + 1)}
                             className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors px-2"
@@ -106,36 +106,36 @@ export default function CartPage() {
 
             {/* Right Column: Order Summary */}
             <div className="lg:col-span-1 space-y-6">
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-xl shadow-xl sticky top-28">
+              <div className="theme-surface theme-surface border border-theme-surface dark:border-slate-800 p-8 rounded-xl shadow-xl sticky top-28">
                 <h3 className="text-xl font-bold mb-6">Order Summary</h3>
                 <div className="space-y-4 mb-6">
-                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                  <div className="flex justify-between theme-text dark:theme-text">
                     <span>Subtotal</span>
-                    <span className="font-medium text-slate-900 dark:text-slate-100">${subtotal.toFixed(2)}</span>
+                    <span className="font-medium theme-text dark:theme-text">${subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-slate-600 dark:text-slate-400">
+                  <div className="flex justify-between theme-text dark:theme-text">
                     <span>Platform Tax (5%)</span>
-                    <span className="font-medium text-slate-900 dark:text-slate-100">${tax.toFixed(2)}</span>
+                    <span className="font-medium theme-text dark:theme-text">${tax.toFixed(2)}</span>
                   </div>
                   <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between">
                     <span className="text-lg font-bold">Total</span>
-                    <span className="text-2xl font-black text-primary">${total.toFixed(2)}</span>
+                    <span className="text-2xl font-black theme-accent-text">${total.toFixed(2)}</span>
                   </div>
                 </div>
 
                 {/* Coupon Field */}
                 <div className="mb-8">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2" htmlFor="coupon">
+                  <label className="block text-xs font-bold uppercase tracking-wider theme-text mb-2" htmlFor="coupon">
                     Coupon Code
                   </label>
                   <div className="flex gap-2">
                     <input 
-                      className="flex-1 rounded-lg border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 px-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
+                      className="flex-1 rounded-lg border-theme-surface dark:border-slate-800 bg-slate-50 theme-surface/50 px-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none" 
                       id="coupon" 
                       placeholder="DIGITAL24" 
                       type="text"
                     />
-                    <button className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-sm font-bold transition-colors">
+                    <button className="px-4 py-2 theme-surface theme-surface hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-sm font-bold transition-colors">
                       Apply
                     </button>
                   </div>
@@ -145,7 +145,7 @@ export default function CartPage() {
                 {isAuthenticated ? (
                   <Link
                     href="/checkout"
-                    className="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/25 transition-all active:scale-[0.98]"
+                    className="w-full theme-accent hover:theme-accent/90 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/25 transition-all active:scale-[0.98]"
                   >
                     Proceed to Checkout
                     <span className="material-symbols-outlined">arrow_forward</span>
@@ -153,7 +153,7 @@ export default function CartPage() {
                 ) : (
                   <Link
                     href="/login"
-                    className="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/25 transition-all active:scale-[0.98]"
+                    className="w-full theme-accent hover:theme-accent/90 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/25 transition-all active:scale-[0.98]"
                   >
                     Login to Checkout
                     <span className="material-symbols-outlined">arrow_forward</span>
@@ -167,12 +167,12 @@ export default function CartPage() {
               </div>
 
               {/* Upsell / Promo */}
-              <div className="bg-gradient-to-br from-primary to-purple-600 rounded-xl p-6 text-white shadow-lg overflow-hidden relative">
+              <div className="bg-linear-to-br from-primary to-purple-600 rounded-xl p-6 text-white shadow-lg overflow-hidden relative">
                 <div className="relative z-10">
                   <h4 className="font-bold mb-2">Join Premium Membership</h4>
                   <p className="text-sm opacity-90 mb-4">Get 20% off on all digital assets and priority support.</p>
                   <Link 
-                    className="inline-block text-xs font-bold bg-white text-primary px-4 py-2 rounded-full hover:bg-slate-100 transition-colors" 
+                    className="inline-block text-xs font-bold theme-surface theme-surface theme-accent-text px-4 py-2 rounded-full hover:theme-surface transition-colors" 
                     href="/signup"
                   >
                     Learn More
@@ -186,7 +186,7 @@ export default function CartPage() {
 
         {/* Continue Shopping Link */}
         <div className="mt-12 text-center">
-          <Link className="inline-flex items-center gap-2 text-slate-500 hover:text-primary font-medium transition-colors" href="/products">
+          <Link className="inline-flex items-center gap-2 theme-text hover:theme-accent-text font-medium transition-colors" href="/products">
             <span className="material-symbols-outlined">keyboard_backspace</span>
             Continue Shopping
           </Link>
@@ -194,13 +194,13 @@ export default function CartPage() {
       </main>
 
       {/* Footer Simple */}
-      <footer className="mt-20 border-t border-slate-200 dark:border-slate-800 py-10 px-6">
+      <footer className="mt-20 border-t border-theme-surface dark:border-slate-800 py-10 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-sm text-slate-500">© 2024 DigitalMarket Inc. All rights reserved.</p>
+          <p className="text-sm theme-text">© 2024 DigitalMarket Inc. All rights reserved.</p>
           <div className="flex gap-8">
-            <Link className="text-sm text-slate-500 hover:text-slate-900 dark:hover:text-slate-100" href="/support/privacy">Privacy Policy</Link>
-            <Link className="text-sm text-slate-500 hover:text-slate-900 dark:hover:text-slate-100" href="/support/termsofservices">Terms of Service</Link>
-            <Link className="text-sm text-slate-500 hover:text-slate-900 dark:hover:text-slate-100" href="/support/help_center">Help Center</Link>
+            <Link className="text-sm theme-text hover:theme-text dark:hover:theme-text" href="/support/privacy">Privacy Policy</Link>
+            <Link className="text-sm theme-text hover:theme-text dark:hover:theme-text" href="/support/termsofservices">Terms of Service</Link>
+            <Link className="text-sm theme-text hover:theme-text dark:hover:theme-text" href="/support/help_center">Help Center</Link>
           </div>
         </div>
       </footer>
