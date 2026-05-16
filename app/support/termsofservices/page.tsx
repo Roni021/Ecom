@@ -5,7 +5,7 @@ export default function about() {
     <div className="theme-page font-display theme-text dark:theme-text antialiased">
 <div className="relative flex min-h-screen flex-col">
 {/* <!-- Navigation Header --> */}
-<header className="sticky top-0 z-50 w-full border-b border-theme-surface dark:border-slate-800 theme-surface/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-12 py-4">
+{/* <header className="sticky top-0 z-50 w-full border-b border-theme-surface dark:border-slate-800 theme-surface/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-12 py-4">
 <div className="max-w-7xl mx-auto flex items-center justify-between gap-8">
 <div className="flex items-center gap-8">
 <div className="flex items-center gap-3">
@@ -30,7 +30,7 @@ export default function about() {
 </div>
 </div>
 </div>
-</header>
+</header> */}
 <main className="flex-1 w-full max-w-7xl mx-auto px-6 md:px-12 py-12">
 {/* <!-- Breadcrumbs & Title --> */}
 <div className="mb-12">
@@ -160,7 +160,7 @@ export default function about() {
 </div>
 </main>
 {/* <!-- Footer --> */}
-<footer className="theme-surface dark:bg-background-dark border-t border-theme-surface dark:border-slate-800 py-12 px-6 md:px-12">
+{/* <footer className="theme-surface dark:bg-background-dark border-t border-theme-surface dark:border-slate-800 py-12 px-6 md:px-12">
 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
 <div className="flex items-center gap-3">
 <div className="w-8 h-8 theme-accent/20 flex items-center justify-center rounded theme-accent-text">
@@ -176,7 +176,7 @@ export default function about() {
 </div>
 <p className="text-sm theme-text">© 2026 ShopDynamics Inc. All rights reserved.</p>
 </div>
-</footer>
+</footer> */}
 </div>
 </div>
   );

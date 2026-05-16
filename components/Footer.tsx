@@ -68,9 +68,9 @@ export default function Footer() {
         <div className="pt-8 border-t border-theme-surface dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm theme-text dark:theme-text">
           <p>© 2026 DesignAssets. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="/privacy" className="hover:theme-accent-text transition-colors">Privacy</a>
-            <a href="/termsofservices" className="hover:theme-accent-text transition-colors">Terms</a>
-            <a href="#" className="hover:theme-accent-text transition-colors">Cookies</a>
+            <a href="/support/privacy" className="hover:theme-accent-text transition-colors">Privacy</a>
+            <a href="/support/termsofservices" className="hover:theme-accent-text transition-colors">Terms</a>
+            <a href="/cookies" className="hover:theme-accent-text transition-colors">Cookies</a>
           </div>
         </div>
       </div>

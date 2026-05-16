@@ -5,7 +5,7 @@ export default function about() {
     <div className="theme-page theme-text dark:theme-text font-display">
 <div className="relative flex min-h-screen flex-col">
 {/* <!-- Top Navigation --> */}
-<header className="sticky top-0 z-50 w-full border-b border-theme-surface dark:border-slate-800 theme-surface/80 dark:bg-background-dark/80 backdrop-blur-md">
+{/* <header className="sticky top-0 z-50 w-full border-b border-theme-surface dark:border-slate-800 theme-surface/80 dark:bg-background-dark/80 backdrop-blur-md">
 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 <div className="flex items-center gap-8">
 <div className="flex items-center gap-2 theme-accent-text">
@@ -30,7 +30,7 @@ export default function about() {
 </div>
 </div>
 </div>
-</header>
+</header> */}
 {/* <!-- Main Content Area --> */}
 <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col lg:flex-row gap-8 px-6 py-12">
 {/* <!-- Sidebar Navigation --> */}
@@ -178,7 +178,7 @@ export default function about() {
 </article>
 </main>
 {/* <!-- Bottom Banner --> */}
-<footer className="bg-slate-900 dark:bg-black text-white py-12 px-6">
+{/* <footer className="bg-slate-900 dark:bg-black text-white py-12 px-6">
 <div className="mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center gap-8">
 <div className="flex flex-col gap-4 max-w-md text-center md:text-left">
 <div className="flex items-center justify-center md:justify-start gap-2 text-white">
@@ -207,7 +207,7 @@ export default function about() {
 </div>
 </div>
 </div>
-</footer>
+</footer> */}
 </div>
 </div>
   );

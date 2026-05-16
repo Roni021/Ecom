@@ -191,72 +191,7 @@ export default function about() {
 </section>
 </main>
 {/* <!-- Footer --> */}
-<footer className="theme-surface dark:bg-slate-950 border-t border-theme-surface dark:border-slate-800 pt-16 pb-8">
-<div className="max-w-7xl mx-auto px-4">
-<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
-<div className="col-span-2">
-<div className="flex items-center gap-2 theme-accent-text mb-6">
-<span className="material-symbols-outlined text-2xl font-bold">dynamic_form</span>
-<h2 className="theme-text dark:theme-text text-lg font-bold">ShopDynamics</h2>
-</div>
-<p className="theme-text dark:theme-text text-sm max-w-xs mb-6 leading-relaxed">
-                        The leading digital product marketplace for creators and businesses worldwide. Buy and sell with confidence.
-                    </p>
-<div className="flex gap-4">
-<a className="h-10 w-10 rounded-full theme-surface theme-surface flex items-center justify-center theme-text hover:theme-accent-text transition-colors" href="#">
-<span className="material-symbols-outlined">public</span>
-</a>
-<a className="h-10 w-10 rounded-full theme-surface theme-surface flex items-center justify-center theme-text hover:theme-accent-text transition-colors" href="#">
-<span className="material-symbols-outlined">share</span>
-</a>
-<a className="h-10 w-10 rounded-full theme-surface theme-surface flex items-center justify-center theme-text hover:theme-accent-text transition-colors" href="#">
-<span className="material-symbols-outlined">alternate_email</span>
-</a>
-</div>
-</div>
-<div>
-<h4 className="font-bold mb-4">Marketplace</h4>
-<ul className="space-y-2 text-sm theme-text">
-<li><a className="hover:theme-accent-text" href="#">Featured Items</a></li>
-<li><a className="hover:theme-accent-text" href="#">New Releases</a></li>
-<li><a className="hover:theme-accent-text" href="#">Bestsellers</a></li>
-<li><a className="hover:theme-accent-text" href="#">Member Benefits</a></li>
-</ul>
-</div>
-<div>
-<h4 className="font-bold mb-4">Company</h4>
-<ul className="space-y-2 text-sm theme-text">
-<li><a className="hover:theme-accent-text" href="#">About Us</a></li>
-<li><a className="hover:theme-accent-text" href="#">Careers</a></li>
-<li><a className="hover:theme-accent-text" href="#">Press Kit</a></li>
-<li><a className="hover:theme-accent-text" href="#">Contact</a></li>
-</ul>
-</div>
-<div>
-<h4 className="font-bold mb-4">Legal</h4>
-<ul className="space-y-2 text-sm theme-text">
-<li><a className="hover:theme-accent-text" href="#">Privacy Policy</a></li>
-<li><a className="hover:theme-accent-text" href="#">Terms of Service</a></li>
-<li><a className="hover:theme-accent-text" href="#">Cookie Policy</a></li>
-<li><a className="hover:theme-accent-text" href="#">License Info</a></li>
-</ul>
-</div>
-</div>
-<div className="pt-8 border-t border-theme-surface dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm theme-text">
-<p>© 2026 ShopDynamics Inc. All rights reserved.</p>
-<div className="flex gap-6">
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined text-sm">language</span>
-<span>English (US)</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined text-sm">payments</span>
-<span>USD ($)</span>
-</div>
-</div>
-</div>
-</div>
-</footer>
+
 </div>
   );
 }

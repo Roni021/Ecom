@@ -33,7 +33,7 @@ export default function Home() {
 
                 {/* <!-- Start Selling Button --> */}
                 <Link
-                  href="/signup"
+                  href="/seller"
                   className="theme-surface theme-surface border border-theme-surface border-theme-surface px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-colors flex items-center justify-center gap-2"
                 >
                   Start Selling

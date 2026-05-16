@@ -139,7 +139,7 @@ export default function CartPage() {
                       Apply
                     </button>
                   </div>
-                </div>
+                
 
                 {/* Checkout Button */}
                 {isAuthenticated ? (
@@ -182,6 +182,7 @@ export default function CartPage() {
               </div>
             </div>
           </div>
+          </div>
         )}
 
         {/* Continue Shopping Link */}
@@ -194,7 +195,7 @@ export default function CartPage() {
       </main>
 
       {/* Footer Simple */}
-      <footer className="mt-20 border-t border-theme-surface dark:border-slate-800 py-10 px-6">
+      {/* <footer className="mt-20 border-t border-theme-surface dark:border-slate-800 py-10 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-sm theme-text">© 2024 DigitalMarket Inc. All rights reserved.</p>
           <div className="flex gap-8">
@@ -203,7 +204,7 @@ export default function CartPage() {
             <Link className="text-sm theme-text hover:theme-text dark:hover:theme-text" href="/support/help_center">Help Center</Link>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }
