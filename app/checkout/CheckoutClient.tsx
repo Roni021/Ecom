@@ -16,8 +16,8 @@ export default function CheckoutClient() {
   const [upiId, setUpiId] = useState("");
   const [customDetails, setCustomDetails] = useState("");
   const searchParams = useSearchParams();
-  const productId = searchParams.get("productId");
-  const requiresCustomDetails = searchParams.get("custom") === "true";
+  const productId = searchParams?.get("productId") || '';
+  const requiresCustomDetails = (searchParams?.get("custom") || '') === "true";
   
   const { token, isAuthenticated } = useAuth();
   const { items, subtotal, tax, total, clearCart } = useCart();

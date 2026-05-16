@@ -48,6 +48,8 @@ export default function Navbar() {
               <Link href="/products" className="nav-link">Products</Link>
               <Link href="/categories" className="nav-link">Categories</Link>
               <Link href="/about" className="nav-link">About</Link>
+              <Link href="/upload-product" className="nav-link">Upload</Link>
+              <Link href="/cloudinary-upload" className="nav-link">Cloud Upload</Link>
               <Link href="/contactus" className="nav-link">Contact</Link>
             </nav>
           </div>

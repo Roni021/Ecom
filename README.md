@@ -34,3 +34,29 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Cloudinary integration & testing
+
+1. Create a `.env.local` at the project root and add:
+
+```env
+CLOUDINARY_URL=cloudinary://<API_KEY>:<API_SECRET>@<CLOUD_NAME>
+MONGODB_URI=mongodb://localhost:27017/e-coma
+```
+
+2. Install dependencies and run the dev server:
+
+```bash
+npm install --legacy-peer-deps
+npm run dev
+```
+
+3. Upload test pages:
+- `http://localhost:3000/cloudinary-upload` — quick test page that uploads images/PDFs to Cloudinary and shows results.
+- `http://localhost:3000/upload-product` — product upload UI; files are uploaded to Cloudinary and product records created in MongoDB.
+
+4. Notes:
+- PDF overlay support is implemented in `/api/cloudinary-upload` (the test endpoint) and will place overlay text on every page using `pdf-lib` before upload.
+- The product upload flow (`/api/upload`) uploads files to Cloudinary and saves their secure URLs into the `images` array on the `Product` document.
+- Ensure `MONGODB_URI` points to your MongoDB instance before uploading products.
+

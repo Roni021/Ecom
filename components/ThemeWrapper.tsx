@@ -5,7 +5,8 @@ import React from "react";
 
 export default function ThemeWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isHome = pathname === "/" || pathname === "";
+  const path = pathname || '';
+  const isHome = path === "/" || path === "";
 
   // Map different pages to different interactive gradient backgrounds
   const getGradientClass = (path: string): string => {
@@ -29,7 +30,7 @@ export default function ThemeWrapper({ children }: { children: React.ReactNode }
     return "theme-page";
   };
 
-  const gradientClass = getGradientClass(pathname);
+  const gradientClass = getGradientClass(path);
 
   return (
     <main className={`min-h-screen ${isHome ? "" : gradientClass}`}>
