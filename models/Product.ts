@@ -48,6 +48,20 @@ const productSchema = new mongoose.Schema({
   fileFormats: [{
     type: String,
   }],
+  templateType: {
+    type: String,
+    enum: ['card', 'layout', 'icon_pack', 'email', 'resume', 'other'],
+    default: 'other',
+  },
+  // For templates that require additional structured metadata (e.g. dimensions, color set)
+  templateFields: [
+    {
+      name: String,
+      type: String,
+      required: Boolean,
+      description: String,
+    },
+  ],
   license: {
     type: String,
     enum: ['personal', 'commercial', 'extended'],
