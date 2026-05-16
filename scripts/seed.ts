@@ -1,9 +1,29 @@
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import dbConnect from '@/lib/db';
-import Product from '@/models/Product';
-import User from '@/models/User';
 
 dotenv.config();
+
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/e-coma';
+
+const productSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  price: Number,
+  originalPrice: Number,
+  category: String,
+  images: [String],
+  tags: [String],
+  fileFormats: [String],
+  license: String,
+  rating: Number,
+  reviewCount: Number,
+  downloads: Number,
+  featured: Boolean,
+  isFree: Boolean,
+  createdAt: Date,
+});
+
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 
 const sampleProducts = [
   {
@@ -109,33 +129,26 @@ const sampleProducts = [
     createdAt: new Date(),
   },
 ];
+
 async function seed() {
   try {
-    await dbConnect();
-
-    // Create or find demo seller
-    let demoSeller = await User.findOne({ email: 'demo@seller.local' });
-    if (!demoSeller) {
-      demoSeller = await User.create({
-        name: 'Demo Seller',
-        email: 'demo@seller.local',
-        password: 'demopassword',
-      });
-      console.log('Created demo seller:', demoSeller._id);
-    }
+    await mongoose.connect(MONGODB_URI);
+    console.log('Connected to MongoDB');
 
     // Clear existing products
     await Product.deleteMany({});
     console.log('Cleared existing products');
 
-    // Attach demo seller id to each sample product and insert
-    const productsWithSeller = sampleProducts.map(p => ({ ...p, seller: demoSeller!._id }));
-    await Product.insertMany(productsWithSeller as any);
-    console.log('Inserted sample products with demo seller');
+    // Insert sample products
+    await Product.insertMany(sampleProducts);
+    console.log('Inserted sample products');
 
     console.log('Seed completed successfully!');
   } catch (error) {
     console.error('Seed error:', error);
+  } finally {
+    await mongoose.disconnect();
+    console.log('Disconnected from MongoDB');
   }
 }
 
