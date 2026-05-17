@@ -97,7 +97,7 @@ export async function POST(request: Request) {
         });
       }
 
-      uploadBuffer = await pdfDoc.save();
+      uploadBuffer = Buffer.from(await pdfDoc.save());
     }
 
     const result = await uploadBufferToCloudinary(uploadBuffer, uploadOptions);
