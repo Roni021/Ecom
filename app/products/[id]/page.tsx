@@ -4,6 +4,11 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
+interface SellerInfo {
+  name?: string;
+  shopName?: string;
+}
+
 interface Product {
   _id: string;
   title: string;
@@ -19,6 +24,7 @@ interface Product {
   fileFormats?: string[];
   license?: string;
   requiresDetails?: boolean;
+  seller?: SellerInfo | string;
 }
 
 const categoryLabels: Record<string, string> = {
@@ -51,14 +57,6 @@ const sampleReviews = [
     comment: 'Perfect for my marketing campaign — the layout felt modern and professional.',
   },
 ];
-
-const sellerDetails = {
-  name: 'PixelMarket Studio',
-  rating: 4.9,
-  location: 'Remote',
-  responseTime: 'Within 1 business day',
-  activeProducts: 152,
-};
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -189,11 +187,11 @@ export default function ProductDetailPage() {
               <div className="theme-surface rounded-3xl border border-theme-surface p-6">
                 <h2 className="font-bold text-xl mb-4">Seller Details</h2>
                 <div className="space-y-3 text-sm theme-text dark:theme-text">
-                  <p className="font-semibold">{sellerDetails.name}</p>
-                  <p>Rating: {sellerDetails.rating.toFixed(1)} / 5</p>
-                  <p>Location: {sellerDetails.location}</p>
-                  <p>Response time: {sellerDetails.responseTime}</p>
-                  <p>Active products: {sellerDetails.activeProducts}</p>
+                  <p className="font-semibold">{typeof product.seller === 'object' ? (product.seller?.shopName || product.seller?.name || 'Independent Seller') : 'Independent Seller'}</p>
+                  <p>{typeof product.seller === 'object' ? `Seller: ${product.seller?.name || 'Creator'}` : 'Creator'}</p>
+                  <p>Rating: 4.9 / 5</p>
+                  <p>Location: Remote</p>
+                  <p>Response time: Within 1 business day</p>
                 </div>
               </div>
             </div>

@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
+  const router = useRouter();
   const { user, logout } = useAuth();
   const { items: cartItems, totalItems } = useCart();
   const [dark, setDark] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme');
@@ -48,8 +51,9 @@ export default function Navbar() {
               <Link href="/products" className="nav-link">Products</Link>
               <Link href="/categories" className="nav-link">Categories</Link>
               <Link href="/about" className="nav-link">About</Link>
-              <Link href="/upload-product" className="nav-link">Upload</Link>
-              <Link href="/cloudinary-upload" className="nav-link">Cloud Upload</Link>
+              {user?.role === 'seller' && (
+                <Link href="/upload-product" className="nav-link">Upload</Link>
+              )}
               <Link href="/contactus" className="nav-link">Contact</Link>
             </nav>
           </div>
@@ -57,14 +61,24 @@ export default function Navbar() {
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-4">
             {/* Search */}
-            <div className="hidden lg:flex items-center relative">
+            <form onSubmit={(e: FormEvent<HTMLFormElement>) => {
+              e.preventDefault();
+              const query = searchValue.trim();
+              if (query) {
+                router.push(`/products?search=${encodeURIComponent(query)}`);
+              } else {
+                router.push('/products');
+              }
+            }} className="hidden lg:flex items-center relative">
               <input 
                 className="h-10 w-64 rounded-xl border-none theme-surface theme-surface pl-10 text-sm focus:ring-2 focus:ring-primary dark:text-white" 
-                placeholder="Search anything..." 
+                placeholder="Search products or categories..." 
                 type="text"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
               />
               <span className="material-symbols-outlined absolute left-3 theme-text dark:theme-text">search</span>
-            </div>
+            </form>
 
             {/* Cart */}
             <Link href="/cart" className="relative p-2 hover:theme-surface dark:hover:bg-slate-800 rounded-full transition">
@@ -119,6 +133,9 @@ export default function Navbar() {
             <Link href="/products" className="block py-2">Products</Link>
             <Link href="/categories" className="block py-2">Categories</Link>
             <Link href="/about" className="block py-2">About</Link>
+            {user?.role === 'seller' && (
+              <Link href="/upload-product" className="block py-2">Upload</Link>
+            )}
             <Link href="/contactus" className="block py-2">Contact</Link>
           </div>
         )}

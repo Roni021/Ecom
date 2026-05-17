@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 const categories = [
   'ui_kits',
@@ -15,6 +17,8 @@ const categories = [
 ];
 
 export default function UploadProductClient() {
+  const router = useRouter();
+  const { user, token, loading: authLoading } = useAuth();
   const [form, setForm] = useState<any>({
     title: '',
     description: '',
@@ -26,68 +30,83 @@ export default function UploadProductClient() {
     license: 'personal',
     templateType: 'other',
     templateFields: '',
+    requiresDetails: false,
+    overlayText: '',
   });
-  const [files, setFiles] = useState<FileList | null>(null);
-  const [previews, setPreviews] = useState<string[]>([]);
-  const [demoSellerId, setDemoSellerId] = useState<string>('');
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>('');
   const [message, setMessage] = useState<string>('');
+  const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch('/api/demo')
-      .then((r) => r.json())
-      .then((data) => setDemoSellerId(data.demoSellerId || ''))
-      .catch(() => {});
-  }, []);
+    if (!authLoading && (!user || user.role !== 'seller')) {
+      router.push('/seller/login');
+    }
+  }, [router, user, authLoading]);
 
   useEffect(() => {
-    // generate previews
-    if (!files) {
-      setPreviews([]);
+    if (!file) {
+      setPreview('');
       return;
     }
-    const arr = Array.from(files).map((f) => URL.createObjectURL(f));
-    setPreviews(arr);
-
-    return () => {
-      arr.forEach((u) => URL.revokeObjectURL(u));
-    };
-  }, [files]);
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   function handleChange(e: any) {
-    const { name, value } = e.target;
-    setForm((s: any) => ({ ...s, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setForm((prev: any) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
   }
 
   async function handleSubmit(e: any) {
     e.preventDefault();
     setMessage('');
-    setLoading(true);
+    setError('');
 
+    if (!file || !form.title || !form.description || !form.price) {
+      setError('Please provide all required fields and upload a file.');
+      return;
+    }
+
+    if (!token) {
+      setError('Seller authentication is required.');
+      return;
+    }
+
+    setLoading(true);
     const formData = new FormData();
     formData.append('title', form.title);
     formData.append('description', form.description);
     formData.append('price', String(Number(form.price) || 0));
-    formData.append('originalPrice', String(Number(form.originalPrice) || 0));
+    formData.append('originalPrice', String(Number(form.originalPrice) || form.price));
     formData.append('category', form.category);
     formData.append('tags', form.tags || '');
     formData.append('fileFormats', form.fileFormats || '');
     formData.append('license', form.license);
     formData.append('templateType', form.templateType);
     formData.append('templateFields', form.templateFields || '');
-    formData.append('seller', demoSellerId || '');
-
-    if (files && files.length > 0) {
-      Array.from(files).forEach((f) => formData.append('files', f));
-    }
+    formData.append('requiresDetails', String(form.requiresDetails));
+    formData.append('overlayText', form.overlayText || '');
+    formData.append('file', file);
 
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch('/api/seller/upload', {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
+
       const data = await res.json();
-      if (res.ok) {
+      if (!res.ok) {
+        setError(data.error || 'Upload failed');
+      } else {
         setMessage('Product uploaded — id: ' + data.product._id);
         setForm({
           title: '',
@@ -100,14 +119,14 @@ export default function UploadProductClient() {
           license: 'personal',
           templateType: 'other',
           templateFields: '',
+          requiresDetails: false,
+          overlayText: '',
         });
-        setFiles(null);
-        setPreviews([]);
-      } else {
-        setMessage(data.error || 'Upload failed');
+        setFile(null);
+        setPreview('');
       }
     } catch (err) {
-      setMessage('Upload failed');
+      setError('Upload failed');
     } finally {
       setLoading(false);
     }
@@ -115,14 +134,14 @@ export default function UploadProductClient() {
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6 mt-8">
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold">Upload Product (Demo)</h2>
-          <p className="text-sm text-gray-500">Fill in the details below to upload a product for the demo seller.</p>
+          <h2 className="text-2xl font-semibold">Upload Product</h2>
+          <p className="text-sm text-gray-500">Upload a design asset as a seller and save Cloudinary metadata to MongoDB.</p>
         </div>
         <div className="text-right">
-          <div className="text-xs text-gray-600">Uploading as</div>
-          <div className="mt-1 inline-block bg-indigo-50 text-indigo-700 px-3 py-1 rounded text-sm">{demoSellerId ? demoSellerId : 'loading...'}</div>
+          <div className="text-xs text-gray-600">Logged in as</div>
+          <div className="mt-1 inline-block bg-indigo-50 text-indigo-700 px-3 py-1 rounded text-sm">{user?.name || 'Seller'}</div>
         </div>
       </div>
 
@@ -168,15 +187,11 @@ export default function UploadProductClient() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Files</label>
-          <input type="file" name="files" multiple onChange={(e) => setFiles(e.target.files)} className="mt-1" />
-          <p className="text-xs text-gray-500 mt-1">Upload images or a zip. Files are stored under <span className="font-mono">/public/uploads</span>.</p>
-
-          {previews.length > 0 && (
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              {previews.map((u, i) => (
-                <img key={i} src={u} className="w-full h-24 object-cover rounded" alt={`preview-${i}`} />
-              ))}
+          <label className="block text-sm font-medium text-gray-700">File</label>
+          <input type="file" name="file" onChange={(e) => setFile(e.target.files?.[0] || null)} className="mt-1" />
+          {preview && (
+            <div className="mt-3">
+              <img src={preview} alt="Upload preview" className="w-full max-h-64 object-cover rounded" />
             </div>
           )}
         </div>
@@ -193,34 +208,41 @@ export default function UploadProductClient() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Template Type</label>
-          <select name="templateType" value={form.templateType} onChange={handleChange} className="mt-1 block w-full border border-gray-200 rounded px-3 py-2">
-            <option value="other">other</option>
-            <option value="card">card</option>
-            <option value="layout">layout</option>
-            <option value="icon_pack">icon pack</option>
-            <option value="email">email</option>
-            <option value="resume">resume</option>
-          </select>
+          <label className="block text-sm font-medium text-gray-700">Overlay text for PDF</label>
+          <input
+            name="overlayText"
+            value={form.overlayText}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-200 rounded px-3 py-2"
+            placeholder="Optional custom text for PDF files"
+          />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Template Fields</label>
-          <textarea name="templateFields" value={form.templateFields} onChange={handleChange} placeholder={`One per line: name:type:required:true/false:description\nExample:\nwidth:number:true:Canvas width\nheight:number:true:Canvas height`} rows={4} className="mt-1 block w-full border border-gray-200 rounded px-3 py-2" />
-          <p className="text-xs text-gray-500 mt-1">Use one line per field. Required fields mark with <span className="font-medium">true</span>.</p>
+        <div className="flex items-center gap-3">
+          <input
+            id="requiresDetails"
+            name="requiresDetails"
+            type="checkbox"
+            checked={form.requiresDetails}
+            onChange={handleChange}
+            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+          />
+          <label htmlFor="requiresDetails" className="text-sm text-gray-700">
+            This product requires custom checkout details.
+          </label>
         </div>
 
-        <div className="flex items-center justify-between pt-4">
-          <div>
-            <button type="submit" disabled={!demoSellerId || loading} className="inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 disabled:opacity-50">
-              {loading ? 'Uploading...' : 'Upload as Demo Seller'}
-            </button>
-          </div>
-          <div>
-            {message && (
-              <div className="text-sm text-green-700 bg-green-50 px-3 py-2 rounded">{message}</div>
-            )}
-          </div>
+        {error && <div className="text-sm text-rose-600">{error}</div>}
+        {message && <div className="text-sm text-green-700 bg-green-50 p-3 rounded">{message}</div>}
+
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            disabled={loading || !user || user.role !== 'seller'}
+            className="inline-flex items-center bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 disabled:opacity-60"
+          >
+            {loading ? 'Uploading...' : 'Upload product'}
+          </button>
         </div>
       </form>
     </div>

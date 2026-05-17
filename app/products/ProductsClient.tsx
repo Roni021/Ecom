@@ -40,23 +40,37 @@ export default function ProductsClient() {
   const [error, setError] = useState('');
   const [addingToCart, setAddingToCart] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const searchParams = useSearchParams();
   const { addToCart, items } = useCart();
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    const categoryFromQuery = searchParams?.get('category');
+    const categoryFromQuery = searchParams?.get('category') || 'all';
+    const searchFromQuery = searchParams?.get('search')?.trim() || '';
+
     if (categoryFromQuery && productCategories.some((category) => category.id === categoryFromQuery)) {
       setSelectedCategory(categoryFromQuery);
+    } else {
+      setSelectedCategory('all');
     }
 
-    fetchProducts();
+    setSearchTerm(searchFromQuery);
+    fetchProducts(categoryFromQuery, searchFromQuery);
   }, [searchParams]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (category = 'all', search = '') => {
     try {
-      const res = await fetch('/api/products');
+      const queryParts: string[] = [];
+      if (category && category !== 'all') {
+        queryParts.push(`category=${encodeURIComponent(category)}`);
+      }
+      if (search) {
+        queryParts.push(`search=${encodeURIComponent(search)}`);
+      }
+      const query = queryParts.length ? `?${queryParts.join('&')}` : '';
+      const res = await fetch(`/api/products${query}`);
       const data = await res.json();
       if (data.products) {
         setProducts(data.products);
@@ -109,9 +123,13 @@ export default function ProductsClient() {
     return items.some(item => item.product._id === productId);
   };
 
-  const visibleProducts = selectedCategory === 'all'
-    ? products
-    : products.filter(product => product.category === selectedCategory);
+  const visibleProducts = products.filter((product) => {
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+    const matchesSearch = !searchTerm || [product.title, product.description, product.category]
+      .some((field) => field.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    return matchesCategory && matchesSearch;
+  });
 
   if (loading) {
     return (

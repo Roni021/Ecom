@@ -1,7 +1,6 @@
-# TODO
-
-## Seller sign up page responsive/design fixes
-- [ ] Update `app/seller/sign_up/page.tsx` to improve responsiveness (mobile padding, spacing, remove desktop-only widths that overflow)
-- [ ] Fix missing custom classes used in the page (`premium-shadow`) by replacing with Tailwind equivalents or adding local CSS
-- [ ] Re-run `npm run lint` and `npm run build` to confirm no regressions
+- [x] Create nodemailer contact API route at app/api/contact/route.ts
+- [x] Update app/contactus/page.tsx form to POST to /api/contact
+- [x] Add nodemailer dependency to package.json
+- [x] Contact form API + nodemailer wired
+- [ ] Run dev server and test contact form submission
 

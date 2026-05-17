@@ -9,14 +9,16 @@ interface User {
   email: string;
   role: string;
   avatar?: string;
+  shopName?: string;
+  shopDescription?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (name: string, email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, isSeller?: boolean) => Promise<void>;
+  signup: (name: string, email: string, password: string, options?: { role?: 'user' | 'seller'; shopName?: string; shopDescription?: string }) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -44,8 +46,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const res = await fetch('/api/auth/login', {
+  const login = async (email: string, password: string, isSeller = false) => {
+    const endpoint = isSeller ? '/api/seller/login' : '/api/auth/login';
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -57,7 +60,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(data.error || 'Login failed');
     }
 
-    // Store in cookies
     Cookies.set('token', data.token, { expires: 7 });
     Cookies.set('user', JSON.stringify(data.user), { expires: 7 });
 
@@ -65,7 +67,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(data.user);
   };
 
-  const signup = async (name: string, email: string, password: string) => {
+  const signup = async (
+    name: string,
+    email: string,
+    password: string,
+    options: { role?: 'user' | 'seller'; shopName?: string; shopDescription?: string } = {}
+  ) => {
+    if (options.role === 'seller') {
+      const res = await fetch('/api/seller/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          shopName: options.shopName,
+          shopDescription: options.shopDescription,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Seller signup failed');
+      }
+
+      Cookies.set('token', data.token, { expires: 7 });
+      Cookies.set('user', JSON.stringify(data.user), { expires: 7 });
+
+      setToken(data.token);
+      setUser(data.user);
+      return;
+    }
+
     const res = await fetch('/api/auth/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -78,7 +111,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw new Error(data.error || 'Signup failed');
     }
 
-    // Auto login after signup
     await login(email, password);
   };
 

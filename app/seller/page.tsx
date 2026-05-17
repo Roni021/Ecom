@@ -31,7 +31,7 @@ export default function SellerPage() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
-                  href="/signup"
+                  href="/seller/sign_up"
                   className="bg-[var(--primary)] text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all text-center"
                 >
                   Let's Register

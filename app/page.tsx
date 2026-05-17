@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -72,44 +71,44 @@ export default function Home() {
               <h2 className="text-3xl font-bold tracking-tight mb-4">Browse by Category</h2>
               <p className="theme-text dark:theme-text">Everything you need for your next masterpiece.</p>
             </div>
-            <a className="text-[var(--primary)] font-semibold hover:underline flex items-center gap-1" href="#">
+            <Link className="text-[var(--primary)] font-semibold hover:underline flex items-center gap-1" href="/products">
               See All
               <span className="material-symbols-outlined text-sm">open_in_new</span>
-            </a>
+            </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* <!-- Category Card 1 --> */}
-            <a className="group relative aspect-square overflow-hidden rounded-2xl theme-surface theme-surface" href="#">
+            <Link className="group relative aspect-square overflow-hidden rounded-2xl theme-surface theme-surface" href="/products?category=ui_kits">
               <img alt="Templates" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Clean corporate website template mockup" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5NSawv0RAGTtgzqo6xQCFDO1txCkqYYf1VeG9e09Dtb4eHa8RD6KMpe-jtGcDPxw8Ivo7C37uHjyhFtBB94eBs3_Uw09mY_bVScpBrPnDLFAPK_oP4hfJvAzqMGDBO-jSZdqbqqdvPP63E7VY-27dzuzHs3iHH9PNb_u9RjkQgM9d2Jbc43oWM4Bb_VSSRB5crUHRsAxXvQ0E8yUdcXmaDm2mKRtikSjyVYx9egZE62UjBlMdoYTTnk_PipB23M3u6chcMGYFY4UF" />
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
                 <h3 className="text-white text-xl font-bold">Templates</h3>
                 <p className="text-white/70 text-sm">1.2k+ Assets</p>
               </div>
-            </a>
+            </Link>
             {/* <!-- Category Card 2 --> */}
-            <a className="group relative aspect-square overflow-hidden rounded-2xl theme-surface theme-surface" href="#">
+            <Link className="group relative aspect-square overflow-hidden rounded-2xl theme-surface theme-surface" href="/products?category=greetingscard">
               <img alt="Greeting Cards" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Beautiful floral wedding invitation cards" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkuM4LNAW4I44BMsn07Fevljsb_-jW-BG9nw5pZbJ1E28M9m3kBWMyEweP-ZCm-2n_D0uV3_-gq6OzDSwchIfnO75zctfmco0n1tj_m3btLTA7CgGLl1sRN6DF3ITGcInXoCMQjGSyfhL9FxzcxKrWLQhjgDYSdndD8PqODm4pyU3ZGKKHlfL63cm5TB3eFxDnDnFzHX6rCR6dzJXMvOcl12F1TtpZS3vOLcXyXOlBUzqkdQ3s9V6LRoVYj1BNA5E6AbdqYu1motbh" />
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
                 <h3 className="text-white text-xl font-bold">Greeting Cards</h3>
                 <p className="text-white/70 text-sm">850+ Assets</p>
               </div>
-            </a>
+            </Link>
             {/* <!-- Category Card 3 --> */}
-            <a className="group relative aspect-square overflow-hidden rounded-2xl theme-surface theme-surface" href="#">
+            <Link className="group relative aspect-square overflow-hidden rounded-2xl theme-surface theme-surface" href="/products?category=ui_kits">
               <img alt="UI Kits" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Modern mobile app UI components" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmAJ0psdP9jBrGIc8D6JgxuzTSpy_vJPLGTJlIMkIEQ1T2fYNhe0fu7rnd8_e6GesN3BixJOwbQJTPGe19VH_DtwGAcbn2Fw6WQUd58NLQCq_aJ1eZ6IUNujsVW6qyhYqbXmDMhfY5OSUoSsHKIVkSLRkV31_ZwGVmlVTR1C75Ra-1FEf2Xmk-cZway0yZ_AHfNyP19sC58OLgXGl09g52WeSQwWZL_3nRgubUWqRkfjR6X9582ZbAqaIAEJephf5d17pHYE6ORGLb" />
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
                 <h3 className="text-white text-xl font-bold">UI Kits</h3>
                 <p className="text-white/70 text-sm">430+ Assets</p>
               </div>
-            </a>
+            </Link>
             {/* <!-- Category Card 4 --> */}
-            <a className="group relative aspect-square overflow-hidden rounded-2xl theme-surface theme-surface" href="#">
+            <Link className="group relative aspect-square overflow-hidden rounded-2xl theme-surface theme-surface" href="/products?category=social_media_asset">
               <img alt="Social Media" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Colorful social media post templates grid" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYFQkX7ATEvuHJhKhdTMwwxTD3PdVS6SGQ14IZU-vsvTKOtjf8JZtH2CJDdJ0EJAVRszk-d-ujlVLGKRnv7rP6XJa0Ga-0PvuO0yFmiORCxg49_mitYbUWXlV5A-sZmD0NQARM6mwRUJPW4AJwGF3nb4ZM1ccWFm5w8EXeRH_jG-cmhsdhG9z6y7bmRwWpP3jmD3MFixNSfc4PaddP3A7x_FHbeKfzTbiWv1sJsc1cJrpmnBYyfu8LSYui0mEPf2wmADxXzKBrmO_4" />
               <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
                 <h3 className="text-white text-xl font-bold">Social Media</h3>
                 <p className="text-white/70 text-sm">2.4k+ Assets</p>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -119,9 +118,15 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
             <h2 className="text-3xl font-bold tracking-tight">Featured Products</h2>
             <div className="flex gap-2">
-              <button className="px-4 py-2 rounded-lg theme-surface theme-surface border border-theme-surface border-theme-surface text-sm font-semibold hover:bg-slate-50">Newest</button>
-              <button className="px-4 py-2 rounded-lg bg-[var(--primary)] text-white text-sm font-semibold">Popular</button>
-              <button className="px-4 py-2 rounded-lg theme-surface theme-surface border border-theme-surface border-theme-surface text-sm font-semibold hover:bg-slate-50">Free</button>
+              <Link href="/products" className="px-4 py-2 rounded-lg theme-surface theme-surface border border-theme-surface border-theme-surface text-sm font-semibold hover:bg-slate-50">
+                Newest
+              </Link>
+              <Link href="/products?featured=true" className="px-4 py-2 rounded-lg bg-[var(--primary)] text-white text-sm font-semibold">
+                Popular
+              </Link>
+              <Link href="/products?search=free" className="px-4 py-2 rounded-lg theme-surface theme-surface border border-theme-surface border-theme-surface text-sm font-semibold hover:bg-slate-50">
+                Free
+              </Link>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

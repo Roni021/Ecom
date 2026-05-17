@@ -126,7 +126,7 @@ export async function GET(request: NextRequest, context: any) {
   if (id) {
     try {
       await dbConnect();
-      product = await Product.findById(id).lean();
+      product = await Product.findById(id).populate('seller', 'name shopName').lean();
     } catch (error) {
       console.warn('Product detail fetch DB error:', error);
     }

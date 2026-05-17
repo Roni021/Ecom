@@ -13,15 +13,23 @@ export default function SignupPage() {
   const { signup } = useAuth();
   const router = useRouter();
 
+  const isPasswordLongEnough = password.length >= 8;
+  const hasSpecialCharacter = /[!@#$%^&*(),.?"{}|<>]/.test(password);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+    if (!isPasswordLongEnough) {
+      setError("Password must be at least 8 characters long.");
       return;
     }
-    
+
+    if (!hasSpecialCharacter) {
+      setError("Password must include at least one special character.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -121,7 +129,34 @@ export default function SignupPage() {
 <span className="material-symbols-outlined text-xl">visibility</span>
 </button>
 </div>
-<p className="mt-2 text-xs theme-text">Must be at least 6 characters long.</p>
+<div className="grid gap-3 sm:grid-cols-2 mt-2">
+  <div className="flex items-center gap-2 rounded-2xl border px-4 py-3 text-sm transition-colors"
+    style={{
+      borderColor: isPasswordLongEnough ? 'rgba(16, 185, 129, 0.4)' : 'rgba(148, 163, 184, 0.4)',
+      backgroundColor: isPasswordLongEnough ? 'rgba(16, 185, 129, 0.08)' : 'transparent',
+    }}
+  >
+    <span className="material-symbols-outlined text-[16px]"
+      style={{ fontVariationSettings: "'FILL' 1", color: isPasswordLongEnough ? '#10b981' : '#94a3b8' }}
+    >
+      {isPasswordLongEnough ? 'check_circle' : 'circle'}
+    </span>
+    <span className={isPasswordLongEnough ? 'theme-text' : 'theme-text dark:theme-text'}>8+ characters</span>
+  </div>
+  <div className="flex items-center gap-2 rounded-2xl border px-4 py-3 text-sm transition-colors"
+    style={{
+      borderColor: hasSpecialCharacter ? 'rgba(16, 185, 129, 0.4)' : 'rgba(148, 163, 184, 0.4)',
+      backgroundColor: hasSpecialCharacter ? 'rgba(16, 185, 129, 0.08)' : 'transparent',
+    }}
+  >
+    <span className="material-symbols-outlined text-[16px]"
+      style={{ fontVariationSettings: "'FILL' 1", color: hasSpecialCharacter ? '#10b981' : '#94a3b8' }}
+    >
+      {hasSpecialCharacter ? 'check_circle' : 'circle'}
+    </span>
+    <span className={hasSpecialCharacter ? 'theme-text' : 'theme-text dark:theme-text'}>Special character</span>
+  </div>
+</div>
 </div>
 <div className="flex items-start gap-3 py-2">
 <input className="mt-1 rounded border-slate-300 theme-accent-text focus:ring-primary" id="terms" type="checkbox" required/>
